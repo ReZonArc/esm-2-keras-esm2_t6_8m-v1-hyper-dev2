@@ -1,4 +1,27 @@
-# ESM-2 Structure Prediction Implementation Summary
+# ESM-2 & GPT-2 Hypergraph Implementation Summary
+
+## 🚀 **NEW: GPT-2 Transformer Implementation Complete**
+
+**MAJOR UPDATE:** Successfully implemented a complete GPT-2 transformer using the hypergraph methodology, enabling comparative analysis between different transformer architectures.
+
+### GPT-2 Implementation Achievements
+- ✅ **Complete GPT-2 Hypergraph** - Full causal language model representation (149 nodes, 112 edges for GPT-2 Small)
+- ✅ **Causal Attention Mechanism** - Proper masked attention implementation with causal_mask parameter
+- ✅ **Pre-Layer Normalization** - GPT-2 style layer norm placement (before attention/FFN)
+- ✅ **Learned Position Embeddings** - Alternative to ESM-2's rotary encoding
+- ✅ **All Model Sizes Supported** - GPT-2 Small (117M), Medium (345M), Large (762M), XL (1.5B)
+- ✅ **Enhanced MetaGraph** - Tensor shape type system with compatibility analysis
+- ✅ **Comprehensive Testing** - 16 additional tests covering all GPT-2 features
+- ✅ **Architectural Comparison** - Side-by-side analysis with ESM-2
+
+### Key Architectural Differences Mapped
+| Component | ESM-2 | GPT-2 |
+|-----------|--------|--------|
+| **Attention** | Bidirectional | Causal/Masked |
+| **Position Encoding** | Rotary (RoPE) | Learned Embeddings |
+| **Layer Normalization** | Post-norm | Pre-norm |
+| **Vocabulary** | 33 amino acids | 50,257 tokens |
+| **Use Case** | Protein understanding | Text generation |
 
 ## 🎯 Successfully Implemented All Key ESM-2 Paper Capabilities
 
