@@ -1,6 +1,36 @@
-# ESM-2 Hypergraph Mapping with Prime Factorization MetaGraph
+# ESM-2 & GPT-2 Hypergraph Mapping with Prime Factorization MetaGraph
 
-This repository contains a complete hypergraph representation of the ESM-2 (Evolutionary Scale Modeling) transformer model variant `esm2_t6_8m-v1`, enhanced with comprehensive structure prediction analysis capabilities and a revolutionary **prime factorization tensor type system** for creating a typed hypergraph (metagraph) representation.
+This repository contains complete hypergraph representations of both ESM-2 (Evolutionary Scale Modeling) and GPT-2 transformer models, enhanced with comprehensive analysis capabilities and a revolutionary **prime factorization tensor type system** for creating typed hypergraph (metagraph) representations.
+
+## 🚀 **NEW: GPT-2 Transformer Implementation**
+
+**MAJOR UPDATE:** Now includes a complete GPT-2 transformer implementation using the same hypergraph methodology, enabling comparative analysis between different transformer architectures:
+
+- **GPT-2 Hypergraph**: Full causal language model representation
+- **GPT-2 MetaGraph**: Enhanced with tensor shape types
+- **Architectural Comparison**: Side-by-side analysis of ESM-2 vs GPT-2
+- **All Model Sizes**: Support for GPT-2 Small, Medium, Large, and XL variants
+
+### Key Architectural Differences Mapped
+
+| Component | ESM-2 | GPT-2 |
+|-----------|--------|--------|
+| **Attention** | Bidirectional | Causal/Masked |
+| **Position Encoding** | Rotary (RoPE) | Learned Embeddings |
+| **Layer Normalization** | Post-norm | Pre-norm |
+| **Vocabulary** | 33 amino acids | 50,257 tokens |
+| **Use Case** | Protein understanding | Text generation |
+
+### Quick Start - GPT-2
+```python
+from gpt2_hypergraph import create_gpt2_hypergraph
+from gpt2_metagraph import create_gpt2_metagraph
+
+# Create GPT-2 Small hypergraph
+config = {"name": "gpt2_small", "num_layers": 12, "num_heads": 12, "hidden_dim": 768, ...}
+hypergraph = create_gpt2_hypergraph(config)
+metagraph = create_gpt2_metagraph(config)
+```
 
 ## 🧮 Prime Factorization Tensor Type System
 
@@ -276,8 +306,23 @@ graph TD
 ### 🚀 Quick Start
 
 ```bash
-# Generate hypergraph and run ESM-2 analysis demo
+# Generate both ESM-2 and GPT-2 hypergraphs with comparative analysis
 python3 main.py
+
+# Run GPT-2 specific examples and comparisons
+python3 examples/gpt2_example.py
+
+# Run comprehensive tests (includes GPT-2 tests)
+python3 test_gpt2.py
+```
+
+### 🧬 ESM-2 Only Analysis
+```bash
+# Run ESM-2 specific analysis
+python3 esm2_hypergraph.py
+
+# Create ESM-2 metagraph with tensor types
+python3 esm2_metagraph.py
 
 # Query specific capabilities  
 python3 hypergraph_query.py --query structure  # Structure prediction analysis
