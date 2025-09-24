@@ -1,0 +1,835 @@
+{
+  "benchmark_summary": {
+    "timestamp": 1758736837.9089758,
+    "average_model_size_mb": 0.22682571411132812,
+    "formats_tested": 7,
+    "files_analyzed": 4
+  },
+  "existing_files": {
+    "esm2_hypergraph.json": {
+      "filepath": "esm2_hypergraph.json",
+      "size_bytes": 45034,
+      "size_mb": 0.04294776916503906,
+      "last_modified": 1758736468.6188984,
+      "json_keys": [
+        "config",
+        "nodes",
+        "edges",
+        "adjacency",
+        "statistics"
+      ],
+      "estimated_nodes": 64,
+      "estimated_edges": 41,
+      "metadata_fields": 2,
+      "compressed_size_bytes": 3001,
+      "compression_ratio": 0.06663853976995159
+    },
+    "esm2_metagraph.json": {
+      "filepath": "esm2_metagraph.json",
+      "size_bytes": 277177,
+      "size_mb": 0.26433658599853516,
+      "last_modified": 1758736468.6168985,
+      "json_keys": [
+        "config",
+        "base_hypergraph",
+        "tensor_shape_types",
+        "tensor_bundles",
+        "typed_edges",
+        "topos_analysis"
+      ],
+      "estimated_nodes": 0,
+      "estimated_edges": 0,
+      "metadata_fields": 1,
+      "compressed_size_bytes": 8623,
+      "compression_ratio": 0.03111008489160356
+    },
+    "gpt2_hypergraph.json": {
+      "filepath": "gpt2_hypergraph.json",
+      "size_bytes": 99440,
+      "size_mb": 0.0948333740234375,
+      "last_modified": 1758736468.6318984,
+      "json_keys": [
+        "config",
+        "nodes",
+        "edges",
+        "statistics"
+      ],
+      "estimated_nodes": 149,
+      "estimated_edges": 112,
+      "metadata_fields": 2,
+      "compressed_size_bytes": 5183,
+      "compression_ratio": 0.05212188254223653
+    },
+    "gpt2_metagraph.json": {
+      "filepath": "gpt2_metagraph.json",
+      "size_bytes": 529725,
+      "size_mb": 0.5051851272583008,
+      "last_modified": 1758736468.6638985,
+      "json_keys": [
+        "config",
+        "nodes",
+        "edges",
+        "statistics",
+        "tensor_shape_types",
+        "tensor_bundles",
+        "typed_edges"
+      ],
+      "estimated_nodes": 149,
+      "estimated_edges": 112,
+      "metadata_fields": 2,
+      "compressed_size_bytes": 13049,
+      "compression_ratio": 0.024633536268818725
+    }
+  },
+  "format_specifications": {
+    "hypergraph_json": {
+      "name": "Hypergraph JSON",
+      "extension": ".json",
+      "binary": false,
+      "supports_compression": true,
+      "supports_metadata": true,
+      "supports_mmap": false,
+      "typical_overhead_pct": 15.0,
+      "load_speed_factor": 0.8,
+      "description": "Graph-based representation with full metadata"
+    },
+    "metagraph_json": {
+      "name": "MetaGraph JSON",
+      "extension": ".json",
+      "binary": false,
+      "supports_compression": true,
+      "supports_metadata": true,
+      "supports_mmap": false,
+      "typical_overhead_pct": 25.0,
+      "load_speed_factor": 0.7,
+      "description": "Enhanced graph format with tensor type system"
+    },
+    "pytorch_bin": {
+      "name": "PyTorch Binary",
+      "extension": ".bin",
+      "binary": true,
+      "supports_compression": true,
+      "supports_metadata": false,
+      "supports_mmap": true,
+      "typical_overhead_pct": 5.0,
+      "load_speed_factor": 1.0,
+      "description": "Standard PyTorch pickle format"
+    },
+    "pytorch_pth": {
+      "name": "PyTorch PTH",
+      "extension": ".pth",
+      "binary": true,
+      "supports_compression": true,
+      "supports_metadata": true,
+      "supports_mmap": true,
+      "typical_overhead_pct": 8.0,
+      "load_speed_factor": 0.95,
+      "description": "PyTorch format with state dict"
+    },
+    "gguf": {
+      "name": "GGUF",
+      "extension": ".gguf",
+      "binary": true,
+      "supports_compression": true,
+      "supports_metadata": true,
+      "supports_mmap": true,
+      "typical_overhead_pct": 2.0,
+      "load_speed_factor": 1.3,
+      "description": "Efficient quantized format from llama.cpp"
+    },
+    "safetensors": {
+      "name": "SafeTensors",
+      "extension": ".safetensors",
+      "binary": true,
+      "supports_compression": false,
+      "supports_metadata": true,
+      "supports_mmap": true,
+      "typical_overhead_pct": 3.0,
+      "load_speed_factor": 1.2,
+      "description": "Memory-safe tensor format"
+    },
+    "onnx": {
+      "name": "ONNX",
+      "extension": ".onnx",
+      "binary": true,
+      "supports_compression": true,
+      "supports_metadata": true,
+      "supports_mmap": false,
+      "typical_overhead_pct": 12.0,
+      "load_speed_factor": 0.9,
+      "description": "Open neural network exchange format"
+    }
+  },
+  "format_benchmarks": {
+    "hypergraph_json": {
+      "format_name": "hypergraph_json",
+      "file_size_bytes": 273520,
+      "compressed_size_bytes": 95732,
+      "load_time_ms": 14.176607131958008,
+      "save_time_ms": 17.01192855834961,
+      "memory_usage_mb": 0.45365142822265625,
+      "compression_ratio": 0.35,
+      "metadata_size_bytes": 4786,
+      "verification_passed": true
+    },
+    "metagraph_json": {
+      "format_name": "metagraph_json",
+      "file_size_bytes": 297305,
+      "compressed_size_bytes": 104056,
+      "load_time_ms": 16.201836722237726,
+      "save_time_ms": 19.44220406668527,
+      "memory_usage_mb": 0.45365142822265625,
+      "compression_ratio": 0.35,
+      "metadata_size_bytes": 5202,
+      "verification_passed": true
+    },
+    "pytorch_bin": {
+      "format_name": "pytorch_bin",
+      "file_size_bytes": 249736,
+      "compressed_size_bytes": 199788,
+      "load_time_ms": 11.341285705566406,
+      "save_time_ms": 13.609542846679688,
+      "memory_usage_mb": 0.3402385711669922,
+      "compression_ratio": 0.8,
+      "metadata_size_bytes": 0,
+      "verification_passed": true
+    },
+    "pytorch_pth": {
+      "format_name": "pytorch_pth",
+      "file_size_bytes": 256871,
+      "compressed_size_bytes": 205497,
+      "load_time_ms": 11.938195479543586,
+      "save_time_ms": 14.325834575452303,
+      "memory_usage_mb": 0.3402385711669922,
+      "compression_ratio": 0.8,
+      "metadata_size_bytes": 10274,
+      "verification_passed": true
+    },
+    "gguf": {
+      "format_name": "gguf",
+      "file_size_bytes": 242600,
+      "compressed_size_bytes": 157690,
+      "load_time_ms": 8.724065927358774,
+      "save_time_ms": 10.468879112830528,
+      "memory_usage_mb": 0.3402385711669922,
+      "compression_ratio": 0.65,
+      "metadata_size_bytes": 7884,
+      "verification_passed": true
+    },
+    "safetensors": {
+      "format_name": "safetensors",
+      "file_size_bytes": 244979,
+      "compressed_size_bytes": 244979,
+      "load_time_ms": 9.45107142130534,
+      "save_time_ms": 11.341285705566408,
+      "memory_usage_mb": 0.3402385711669922,
+      "compression_ratio": 1.0,
+      "metadata_size_bytes": 12248,
+      "verification_passed": true
+    },
+    "onnx": {
+      "format_name": "onnx",
+      "file_size_bytes": 266385,
+      "compressed_size_bytes": 213108,
+      "load_time_ms": 12.601428561740452,
+      "save_time_ms": 15.121714274088541,
+      "memory_usage_mb": 0.45365142822265625,
+      "compression_ratio": 0.8,
+      "metadata_size_bytes": 10655,
+      "verification_passed": true
+    }
+  },
+  "conversion_matrix": {
+    "hypergraph_json": {
+      "metagraph_json": {
+        "source_format": "hypergraph_json",
+        "target_format": "metagraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1972397514011549,
+        "target_size_mb": 0.09861987570057745,
+        "compression_ratio": 0.4,
+        "size_change_pct": -56.52173913043478,
+        "estimated_conversion_time_ms": 3.2403673444475447,
+        "peak_memory_usage_mb": 0.36982453387716546,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "pytorch_bin": {
+        "source_format": "hypergraph_json",
+        "target_format": "pytorch_bin",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1972397514011549,
+        "target_size_mb": 0.17603647812553078,
+        "compression_ratio": 0.85,
+        "size_change_pct": -22.391304347826072,
+        "estimated_conversion_time_ms": 2.2682571411132812,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": false,
+        "supports_mmap": true
+      },
+      "pytorch_pth": {
+        "source_format": "hypergraph_json",
+        "target_format": "pytorch_pth",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1972397514011549,
+        "target_size_mb": 0.1810660917862602,
+        "compression_ratio": 0.85,
+        "size_change_pct": -20.173913043478255,
+        "estimated_conversion_time_ms": 2.387639095908717,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "gguf": {
+        "source_format": "hypergraph_json",
+        "target_format": "gguf",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1972397514011549,
+        "target_size_mb": 0.14082918250042462,
+        "compression_ratio": 0.7,
+        "size_change_pct": -37.91304347826086,
+        "estimated_conversion_time_ms": 1.7448131854717548,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "safetensors": {
+        "source_format": "hypergraph_json",
+        "target_format": "safetensors",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1972397514011549,
+        "target_size_mb": 0.20315694394318956,
+        "compression_ratio": 1.0,
+        "size_change_pct": -10.434782608695642,
+        "estimated_conversion_time_ms": 1.8902142842610679,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "onnx": {
+        "source_format": "hypergraph_json",
+        "target_format": "onnx",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1972397514011549,
+        "target_size_mb": 0.1877722433338995,
+        "compression_ratio": 0.85,
+        "size_change_pct": -17.21739130434781,
+        "estimated_conversion_time_ms": 2.52028571234809,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": false
+      }
+    },
+    "metagraph_json": {
+      "hypergraph_json": {
+        "source_format": "metagraph_json",
+        "target_format": "hypergraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1814605712890625,
+        "target_size_mb": 0.08347186279296875,
+        "compression_ratio": 0.4,
+        "size_change_pct": -63.2,
+        "estimated_conversion_time_ms": 2.8353214263916016,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "pytorch_bin": {
+        "source_format": "metagraph_json",
+        "target_format": "pytorch_bin",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1814605712890625,
+        "target_size_mb": 0.1619535598754883,
+        "compression_ratio": 0.85,
+        "size_change_pct": -28.599999999999998,
+        "estimated_conversion_time_ms": 2.2682571411132812,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": false,
+        "supports_mmap": true
+      },
+      "pytorch_pth": {
+        "source_format": "metagraph_json",
+        "target_format": "pytorch_pth",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1814605712890625,
+        "target_size_mb": 0.16658080444335938,
+        "compression_ratio": 0.85,
+        "size_change_pct": -26.56,
+        "estimated_conversion_time_ms": 2.387639095908717,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "gguf": {
+        "source_format": "metagraph_json",
+        "target_format": "gguf",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1814605712890625,
+        "target_size_mb": 0.12956284790039063,
+        "compression_ratio": 0.7,
+        "size_change_pct": -42.879999999999995,
+        "estimated_conversion_time_ms": 1.7448131854717548,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "safetensors": {
+        "source_format": "metagraph_json",
+        "target_format": "safetensors",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1814605712890625,
+        "target_size_mb": 0.18690438842773438,
+        "compression_ratio": 1.0,
+        "size_change_pct": -17.599999999999998,
+        "estimated_conversion_time_ms": 1.8902142842610679,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "onnx": {
+        "source_format": "metagraph_json",
+        "target_format": "onnx",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.1814605712890625,
+        "target_size_mb": 0.17275046386718754,
+        "compression_ratio": 0.85,
+        "size_change_pct": -23.839999999999982,
+        "estimated_conversion_time_ms": 2.52028571234809,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": false
+      }
+    },
+    "pytorch_bin": {
+      "hypergraph_json": {
+        "source_format": "pytorch_bin",
+        "target_format": "hypergraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2160244896298363,
+        "target_size_mb": 0.0993712652297247,
+        "compression_ratio": 0.4,
+        "size_change_pct": -56.19047619047619,
+        "estimated_conversion_time_ms": 2.8353214263916016,
+        "peak_memory_usage_mb": 0.3726422446114676,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "metagraph_json": {
+        "source_format": "pytorch_bin",
+        "target_format": "metagraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2160244896298363,
+        "target_size_mb": 0.10801224481491817,
+        "compression_ratio": 0.4,
+        "size_change_pct": -52.38095238095237,
+        "estimated_conversion_time_ms": 3.2403673444475447,
+        "peak_memory_usage_mb": 0.4050459180559431,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "pytorch_pth": {
+        "source_format": "pytorch_bin",
+        "target_format": "pytorch_pth",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2160244896298363,
+        "target_size_mb": 0.19831048148018973,
+        "compression_ratio": 0.85,
+        "size_change_pct": -12.571428571428573,
+        "estimated_conversion_time_ms": 2.387639095908717,
+        "peak_memory_usage_mb": 0.34995967320033483,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "gguf": {
+        "source_format": "pytorch_bin",
+        "target_format": "gguf",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2160244896298363,
+        "target_size_mb": 0.1542414855957031,
+        "compression_ratio": 0.7,
+        "size_change_pct": -32.00000000000001,
+        "estimated_conversion_time_ms": 1.7448131854717548,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "safetensors": {
+        "source_format": "pytorch_bin",
+        "target_format": "safetensors",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2160244896298363,
+        "target_size_mb": 0.2225052243187314,
+        "compression_ratio": 1.0,
+        "size_change_pct": -1.9047619047619024,
+        "estimated_conversion_time_ms": 1.8902142842610679,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "onnx": {
+        "source_format": "pytorch_bin",
+        "target_format": "onnx",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2160244896298363,
+        "target_size_mb": 0.20565531412760418,
+        "compression_ratio": 0.85,
+        "size_change_pct": -9.333333333333327,
+        "estimated_conversion_time_ms": 2.52028571234809,
+        "peak_memory_usage_mb": 0.362921142578125,
+        "supports_metadata": true,
+        "supports_mmap": false
+      }
+    },
+    "pytorch_pth": {
+      "hypergraph_json": {
+        "source_format": "pytorch_pth",
+        "target_format": "hypergraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.21002380936234083,
+        "target_size_mb": 0.09661095230667678,
+        "compression_ratio": 0.4,
+        "size_change_pct": -57.40740740740742,
+        "estimated_conversion_time_ms": 2.8353214263916016,
+        "peak_memory_usage_mb": 0.3622910711500379,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "metagraph_json": {
+        "source_format": "pytorch_pth",
+        "target_format": "metagraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.21002380936234083,
+        "target_size_mb": 0.10501190468117041,
+        "compression_ratio": 0.4,
+        "size_change_pct": -53.70370370370371,
+        "estimated_conversion_time_ms": 3.2403673444475447,
+        "peak_memory_usage_mb": 0.393794642554389,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "pytorch_bin": {
+        "source_format": "pytorch_pth",
+        "target_format": "pytorch_bin",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.21002380936234083,
+        "target_size_mb": 0.18744624985588917,
+        "compression_ratio": 0.85,
+        "size_change_pct": -17.36111111111113,
+        "estimated_conversion_time_ms": 2.2682571411132812,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": false,
+        "supports_mmap": true
+      },
+      "gguf": {
+        "source_format": "pytorch_pth",
+        "target_format": "gguf",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.21002380936234083,
+        "target_size_mb": 0.14995699988471134,
+        "compression_ratio": 0.7,
+        "size_change_pct": -33.8888888888889,
+        "estimated_conversion_time_ms": 1.7448131854717548,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "safetensors": {
+        "source_format": "pytorch_pth",
+        "target_format": "safetensors",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.21002380936234083,
+        "target_size_mb": 0.21632452364321106,
+        "compression_ratio": 1.0,
+        "size_change_pct": -4.6296296296296395,
+        "estimated_conversion_time_ms": 1.8902142842610679,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "onnx": {
+        "source_format": "pytorch_pth",
+        "target_format": "onnx",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.21002380936234083,
+        "target_size_mb": 0.19994266651294848,
+        "compression_ratio": 0.85,
+        "size_change_pct": -11.851851851851858,
+        "estimated_conversion_time_ms": 2.52028571234809,
+        "peak_memory_usage_mb": 0.3528399997287326,
+        "supports_metadata": true,
+        "supports_mmap": false
+      }
+    },
+    "gguf": {
+      "hypergraph_json": {
+        "source_format": "gguf",
+        "target_format": "hypergraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.22237815108953737,
+        "target_size_mb": 0.10229394950118718,
+        "compression_ratio": 0.4,
+        "size_change_pct": -54.90196078431373,
+        "estimated_conversion_time_ms": 2.8353214263916016,
+        "peak_memory_usage_mb": 0.38360231062945194,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "metagraph_json": {
+        "source_format": "gguf",
+        "target_format": "metagraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.22237815108953737,
+        "target_size_mb": 0.1111890755447687,
+        "compression_ratio": 0.4,
+        "size_change_pct": -50.98039215686274,
+        "estimated_conversion_time_ms": 3.2403673444475447,
+        "peak_memory_usage_mb": 0.4169590332928826,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "pytorch_bin": {
+        "source_format": "gguf",
+        "target_format": "pytorch_bin",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.22237815108953737,
+        "target_size_mb": 0.1984724998474121,
+        "compression_ratio": 0.85,
+        "size_change_pct": -12.5,
+        "estimated_conversion_time_ms": 2.2682571411132812,
+        "peak_memory_usage_mb": 0.3502455879660214,
+        "supports_metadata": false,
+        "supports_mmap": true
+      },
+      "pytorch_pth": {
+        "source_format": "gguf",
+        "target_format": "pytorch_pth",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.22237815108953737,
+        "target_size_mb": 0.20414314270019532,
+        "compression_ratio": 0.85,
+        "size_change_pct": -9.999999999999998,
+        "estimated_conversion_time_ms": 2.387639095908717,
+        "peak_memory_usage_mb": 0.36025260476505055,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "safetensors": {
+        "source_format": "gguf",
+        "target_format": "safetensors",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.22237815108953737,
+        "target_size_mb": 0.22904949562222351,
+        "compression_ratio": 1.0,
+        "size_change_pct": 0.980392156862752,
+        "estimated_conversion_time_ms": 1.8902142842610679,
+        "peak_memory_usage_mb": 0.34357424343333526,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "onnx": {
+        "source_format": "gguf",
+        "target_format": "onnx",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.22237815108953737,
+        "target_size_mb": 0.2117039998372396,
+        "compression_ratio": 0.85,
+        "size_change_pct": -6.666666666666665,
+        "estimated_conversion_time_ms": 2.52028571234809,
+        "peak_memory_usage_mb": 0.37359529383042284,
+        "supports_metadata": true,
+        "supports_mmap": false
+      }
+    },
+    "safetensors": {
+      "hypergraph_json": {
+        "source_format": "safetensors",
+        "target_format": "hypergraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2202191399139108,
+        "target_size_mb": 0.10130080436039895,
+        "compression_ratio": 0.4,
+        "size_change_pct": -55.33980582524273,
+        "estimated_conversion_time_ms": 2.8353214263916016,
+        "peak_memory_usage_mb": 0.37987801635149604,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "metagraph_json": {
+        "source_format": "safetensors",
+        "target_format": "metagraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2202191399139108,
+        "target_size_mb": 0.11010956995695541,
+        "compression_ratio": 0.4,
+        "size_change_pct": -51.45631067961165,
+        "estimated_conversion_time_ms": 3.2403673444475447,
+        "peak_memory_usage_mb": 0.4129108873385827,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "pytorch_bin": {
+        "source_format": "safetensors",
+        "target_format": "pytorch_bin",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2202191399139108,
+        "target_size_mb": 0.19654558237316538,
+        "compression_ratio": 0.85,
+        "size_change_pct": -13.349514563106798,
+        "estimated_conversion_time_ms": 2.2682571411132812,
+        "peak_memory_usage_mb": 0.34684514536440947,
+        "supports_metadata": false,
+        "supports_mmap": true
+      },
+      "pytorch_pth": {
+        "source_format": "safetensors",
+        "target_format": "pytorch_pth",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2202191399139108,
+        "target_size_mb": 0.20216117044097012,
+        "compression_ratio": 0.85,
+        "size_change_pct": -10.873786407766987,
+        "estimated_conversion_time_ms": 2.387639095908717,
+        "peak_memory_usage_mb": 0.3567550066605355,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "gguf": {
+        "source_format": "safetensors",
+        "target_format": "gguf",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2202191399139108,
+        "target_size_mb": 0.1572364658985323,
+        "compression_ratio": 0.7,
+        "size_change_pct": -30.679611650485445,
+        "estimated_conversion_time_ms": 1.7448131854717548,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "onnx": {
+        "source_format": "safetensors",
+        "target_format": "onnx",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.2202191399139108,
+        "target_size_mb": 0.2096486211980431,
+        "compression_ratio": 0.85,
+        "size_change_pct": -7.57281553398058,
+        "estimated_conversion_time_ms": 2.52028571234809,
+        "peak_memory_usage_mb": 0.3699681550553702,
+        "supports_metadata": true,
+        "supports_mmap": false
+      }
+    },
+    "onnx": {
+      "hypergraph_json": {
+        "source_format": "onnx",
+        "target_format": "hypergraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.20252295902797152,
+        "target_size_mb": 0.0931605611528669,
+        "compression_ratio": 0.4,
+        "size_change_pct": -58.92857142857143,
+        "estimated_conversion_time_ms": 2.8353214263916016,
+        "peak_memory_usage_mb": 0.34935210432325087,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "metagraph_json": {
+        "source_format": "onnx",
+        "target_format": "metagraph_json",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.20252295902797152,
+        "target_size_mb": 0.10126147951398577,
+        "compression_ratio": 0.4,
+        "size_change_pct": -55.35714285714285,
+        "estimated_conversion_time_ms": 3.2403673444475447,
+        "peak_memory_usage_mb": 0.3797305481774466,
+        "supports_metadata": true,
+        "supports_mmap": false
+      },
+      "pytorch_bin": {
+        "source_format": "onnx",
+        "target_format": "pytorch_bin",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.20252295902797152,
+        "target_size_mb": 0.18075174093246457,
+        "compression_ratio": 0.85,
+        "size_change_pct": -20.31250000000001,
+        "estimated_conversion_time_ms": 2.2682571411132812,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": false,
+        "supports_mmap": true
+      },
+      "pytorch_pth": {
+        "source_format": "onnx",
+        "target_format": "pytorch_pth",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.20252295902797152,
+        "target_size_mb": 0.18591607638767788,
+        "compression_ratio": 0.85,
+        "size_change_pct": -18.035714285714285,
+        "estimated_conversion_time_ms": 2.387639095908717,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "gguf": {
+        "source_format": "onnx",
+        "target_format": "gguf",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.20252295902797152,
+        "target_size_mb": 0.14460139274597167,
+        "compression_ratio": 0.7,
+        "size_change_pct": -36.25000000000001,
+        "estimated_conversion_time_ms": 1.7448131854717548,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      },
+      "safetensors": {
+        "source_format": "onnx",
+        "target_format": "safetensors",
+        "source_size_mb": 0.22682571411132812,
+        "content_size_mb": 0.20252295902797152,
+        "target_size_mb": 0.20859864779881065,
+        "compression_ratio": 1.0,
+        "size_change_pct": -8.0357142857143,
+        "estimated_conversion_time_ms": 1.8902142842610679,
+        "peak_memory_usage_mb": 0.3402385711669922,
+        "supports_metadata": true,
+        "supports_mmap": true
+      }
+    }
+  },
+  "recommendations": {
+    "best_for_storage": {
+      "format": "hypergraph_json",
+      "reason": "Best compression ratio: 0.350",
+      "compressed_size_mb": 0.09129714965820312
+    },
+    "best_for_inference": {
+      "format": "gguf",
+      "reason": "Fastest load time: 8.7 ms",
+      "supports_mmap": true
+    },
+    "best_for_memory": {
+      "format": "pytorch_bin",
+      "reason": "Lowest memory usage: 0.3 MB",
+      "memory_efficient": true
+    },
+    "hypergraph_advantages": [
+      "Rich metadata support for model analysis",
+      "Human-readable format for debugging",
+      "Excellent compression ratios",
+      "Complete model architecture representation"
+    ],
+    "use_case_recommendations": {
+      "research_and_development": "hypergraph_json",
+      "production_inference": "gguf",
+      "model_sharing": "safetensors",
+      "debugging_analysis": "metagraph_json",
+      "memory_constrained": "gguf",
+      "metadata_rich": "metagraph_json"
+    }
+  }
+}
