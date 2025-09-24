@@ -1884,10 +1884,10 @@
       "layer_0_post_attn_norm"
     ],
     "layer_0_post_attn_norm": [
-      "layer_0_post_ffn_norm",
       "layer_0_ffn_output",
+      "layer_0_ffn_intermediate",
       "layer_0_ffn_activation",
-      "layer_0_ffn_intermediate"
+      "layer_0_post_ffn_norm"
     ],
     "layer_0_ffn_output": [
       "layer_0_post_ffn_norm"
@@ -1912,9 +1912,9 @@
     ],
     "layer_1_post_attn_norm": [
       "layer_1_ffn_activation",
-      "layer_1_ffn_intermediate",
+      "layer_1_post_ffn_norm",
       "layer_1_ffn_output",
-      "layer_1_post_ffn_norm"
+      "layer_1_ffn_intermediate"
     ],
     "layer_1_ffn_output": [
       "layer_1_post_ffn_norm"
@@ -1938,10 +1938,10 @@
       "layer_2_post_attn_norm"
     ],
     "layer_2_post_attn_norm": [
-      "layer_2_ffn_intermediate",
-      "layer_2_post_ffn_norm",
       "layer_2_ffn_activation",
-      "layer_2_ffn_output"
+      "layer_2_ffn_output",
+      "layer_2_post_ffn_norm",
+      "layer_2_ffn_intermediate"
     ],
     "layer_2_ffn_output": [
       "layer_2_post_ffn_norm"
@@ -1965,9 +1965,9 @@
       "layer_3_post_attn_norm"
     ],
     "layer_3_post_attn_norm": [
-      "layer_3_ffn_output",
       "layer_3_post_ffn_norm",
       "layer_3_ffn_intermediate",
+      "layer_3_ffn_output",
       "layer_3_ffn_activation"
     ],
     "layer_3_ffn_output": [
@@ -1992,10 +1992,10 @@
       "layer_4_post_attn_norm"
     ],
     "layer_4_post_attn_norm": [
+      "layer_4_ffn_activation",
       "layer_4_ffn_output",
-      "layer_4_ffn_intermediate",
       "layer_4_post_ffn_norm",
-      "layer_4_ffn_activation"
+      "layer_4_ffn_intermediate"
     ],
     "layer_4_ffn_output": [
       "layer_4_post_ffn_norm"
@@ -2019,10 +2019,10 @@
       "layer_5_post_attn_norm"
     ],
     "layer_5_post_attn_norm": [
-      "final_layer_norm",
       "layer_5_ffn_intermediate",
-      "layer_5_ffn_output",
-      "layer_5_ffn_activation"
+      "final_layer_norm",
+      "layer_5_ffn_activation",
+      "layer_5_ffn_output"
     ],
     "layer_5_ffn_output": [
       "final_layer_norm"
