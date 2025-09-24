@@ -346,6 +346,11 @@ python3 test_performance_evaluation.py              # Unit tests for performance
 python3 hypergraph_query.py --query hypergredient     # Generate optimal formulation
 python3 hypergraph_query.py --query compatibility     # Check ingredient compatibility  
 python3 hypergraph_query.py --query ingredient --ingredient-id tretinoin  # Ingredient profile
+
+# NEW: Persona-Based Training System
+python3 hypergraph_query.py --query persona           # View available personas & demo predictions
+python3 hypergraph_query.py --query persona_train     # Demonstrate persona training
+python3 test_persona_training.py                      # Run persona training tests
 ```
 
 ### 🧬 Structure Prediction Analysis
@@ -688,6 +693,73 @@ The database includes proven ingredients across all classes:
 
 Each ingredient includes comprehensive data on efficacy, safety, stability, cost, pH ranges, and interactions.
 
+#### 🎭 Persona-Based Training System
+
+The framework includes an advanced persona-based training system that enables personalized formulation recommendations based on individual user characteristics and preferences.
+
+**Default Personas Available:**
+- **Sensitive Skin Specialist**: Prioritizes gentle, hypoallergenic formulations
+- **Anti-Aging Enthusiast**: Seeks powerful anti-aging ingredients with proven efficacy  
+- **Acne-Prone Specialist**: Focuses on oil control and acne treatment
+- **Natural Beauty Advocate**: Prefers natural and organic ingredients
+
+**Query Available Personas:**
+```bash
+python3 hypergraph_query.py --query persona
+```
+
+**Demonstrate Persona Training:**
+```bash
+python3 hypergraph_query.py --query persona_train
+```
+
+**Example Persona Usage:**
+```python
+from hypergredient_framework import PersonaTrainingSystem, HypergredientAI
+
+# Initialize persona-aware AI
+persona_system = PersonaTrainingSystem()
+ai_system = HypergredientAI(persona_system)
+
+# Set active persona
+ai_system.persona_system.set_active_persona('sensitive_skin')
+
+# Get persona-aware predictions
+prediction = ai_system.predict_optimal_combination(request)
+print(f"Active persona: {prediction['active_persona']}")
+print(f"Persona adjustments: {prediction['persona_adjustments']}")
+```
+
+**Custom Persona Creation:**
+```python
+from hypergredient_framework import PersonaProfile
+
+custom_persona = PersonaProfile(
+    persona_id="mature_skin",
+    name="Mature Skin Expert", 
+    description="Focuses on age-related skin concerns",
+    skin_type="mature",
+    primary_concerns=["fine_lines", "loss_of_elasticity"],
+    sensitivity_level=0.6,
+    safety_priority=0.75
+)
+
+persona_system.add_persona(custom_persona)
+```
+
+**Training with User Data:**
+```python
+# Train persona with real user feedback
+ai_system.train_with_persona(
+    'sensitive_skin', 
+    training_requests,    # List of FormulationRequest objects
+    training_results,     # List of FormulationResult objects  
+    training_feedback     # List of user satisfaction scores
+)
+```
+
+For detailed documentation, see [`PERSONA_TRAINING_GUIDE.md`](PERSONA_TRAINING_GUIDE.md).
+
 ### Generate Hypergraph
 
 ```bash
@@ -848,6 +920,7 @@ No external dependencies required for basic functionality. Optional dependencies
 - **Dynamic Database**: 10 hypergredient classes with comprehensive ingredient data
 - **Synergy Calculation**: Advanced algorithms for ingredient combination optimization
 - **Performance Prediction**: Estimate formulation efficacy and safety scores
+- **🎭 Persona-Based Training**: Personalized AI that adapts to individual user preferences and skin types
 - **Cost Optimization**: Budget-aware formulation generation with cost-effectiveness analysis
 - **Safety Assessment**: Risk-benefit analysis with detailed safety scoring
 

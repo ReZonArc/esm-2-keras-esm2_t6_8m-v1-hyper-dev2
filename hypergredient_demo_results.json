@@ -104,6 +104,7 @@
   },
   "ai_predictions": {
     "model_version": "v1.0",
+    "active_persona": null,
     "predictions": [
       {
         "ingredient_class": "H.CT",
@@ -144,7 +145,8 @@
       "budget_normalized": 0.2,
       "preference_gentleness": 0.15,
       "preference_effectiveness": 0.05
-    }
+    },
+    "persona_adjustments": null
   },
   "evolution_report": {
     "current_generation": 1,
@@ -214,7 +216,7 @@
     "title": "\ud83e\uddec Hypergredient Formulation Analysis Report",
     "timestamp": "Generated with Hypergredient Framework v1.0",
     "formulation_overview": {
-      "formulation_id": "HF-2966",
+      "formulation_id": "HF-1386",
       "target_concerns": [
         "wrinkles",
         "firmness"
