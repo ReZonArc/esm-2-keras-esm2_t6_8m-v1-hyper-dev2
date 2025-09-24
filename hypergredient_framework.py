@@ -698,14 +698,17 @@ class HypergredientOptimizer:
     def optimize_formulation(self, request: FormulationRequest) -> FormulationResult:
         """Generate optimal formulation using hypergredients"""
         
-        # Define objective weights
-        objective_weights = {
-            'efficacy': 0.35,
-            'safety': 0.25,
-            'stability': 0.20,
-            'cost_efficiency': 0.15,
-            'bioavailability': 0.05
-        }
+        # Define objective weights (check for adaptive weights first)
+        if hasattr(self, '_adaptive_weights') and self._adaptive_weights:
+            objective_weights = self._adaptive_weights
+        else:
+            objective_weights = {
+                'efficacy': 0.35,
+                'safety': 0.25,
+                'stability': 0.20,
+                'cost_efficiency': 0.15,
+                'bioavailability': 0.05
+            }
         
         selected_hypergredients = {}
         total_cost = 0.0
@@ -1396,6 +1399,443 @@ class HypergredientAI:
                 print(f"     - {persona_name}: {count} samples")
 
 
+class MetaOptimizationStrategy:
+    """Meta-optimization strategy to generate optimal formulations for every possible condition and treatment"""
+    
+    def __init__(self, database: HypergredientDatabase):
+        self.database = database
+        self.optimizer = HypergredientOptimizer(database)
+        
+        # Comprehensive condition and treatment matrix
+        self.skin_conditions = [
+            'wrinkles', 'aging', 'acne', 'hyperpigmentation', 'dryness', 
+            'sensitivity', 'dullness', 'firmness', 'texture', 'redness',
+            'oiliness', 'blackheads', 'enlarged_pores', 'dehydration',
+            'loss_of_elasticity', 'sun_damage', 'melasma', 'rosacea',
+            'eczema', 'barrier_damage', 'inflammation', 'scarring'
+        ]
+        
+        self.skin_types = ['oily', 'dry', 'sensitive', 'normal', 'combination', 'mature']
+        
+        self.severity_levels = ['mild', 'moderate', 'severe']
+        
+        self.treatment_goals = [
+            'prevention', 'maintenance', 'treatment', 'intensive_treatment',
+            'post_treatment_care', 'long_term_management'
+        ]
+        
+        # Meta-optimization parameters
+        self.optimization_cache = {}
+        self.performance_matrix = {}
+        self.adaptive_weights = {}
+        
+        # Initialize base objective weights for different scenarios
+        self._initialize_adaptive_weights()
+        
+    def _initialize_adaptive_weights(self):
+        """Initialize adaptive objective weights for different scenarios"""
+        self.adaptive_weights = {
+            # Weights by skin type
+            'skin_type': {
+                'sensitive': {'efficacy': 0.25, 'safety': 0.40, 'stability': 0.20, 'cost_efficiency': 0.10, 'bioavailability': 0.05},
+                'oily': {'efficacy': 0.35, 'safety': 0.20, 'stability': 0.25, 'cost_efficiency': 0.15, 'bioavailability': 0.05},
+                'dry': {'efficacy': 0.30, 'safety': 0.25, 'stability': 0.20, 'cost_efficiency': 0.15, 'bioavailability': 0.10},
+                'normal': {'efficacy': 0.35, 'safety': 0.25, 'stability': 0.20, 'cost_efficiency': 0.15, 'bioavailability': 0.05},
+                'combination': {'efficacy': 0.30, 'safety': 0.25, 'stability': 0.25, 'cost_efficiency': 0.15, 'bioavailability': 0.05},
+                'mature': {'efficacy': 0.40, 'safety': 0.30, 'stability': 0.15, 'cost_efficiency': 0.10, 'bioavailability': 0.05}
+            },
+            # Weights by severity level
+            'severity': {
+                'mild': {'efficacy': 0.25, 'safety': 0.35, 'stability': 0.20, 'cost_efficiency': 0.15, 'bioavailability': 0.05},
+                'moderate': {'efficacy': 0.35, 'safety': 0.25, 'stability': 0.20, 'cost_efficiency': 0.15, 'bioavailability': 0.05},
+                'severe': {'efficacy': 0.45, 'safety': 0.20, 'stability': 0.20, 'cost_efficiency': 0.10, 'bioavailability': 0.05}
+            },
+            # Weights by treatment goal
+            'treatment_goal': {
+                'prevention': {'efficacy': 0.20, 'safety': 0.40, 'stability': 0.25, 'cost_efficiency': 0.10, 'bioavailability': 0.05},
+                'maintenance': {'efficacy': 0.30, 'safety': 0.30, 'stability': 0.25, 'cost_efficiency': 0.10, 'bioavailability': 0.05},
+                'treatment': {'efficacy': 0.40, 'safety': 0.25, 'stability': 0.20, 'cost_efficiency': 0.10, 'bioavailability': 0.05},
+                'intensive_treatment': {'efficacy': 0.50, 'safety': 0.20, 'stability': 0.15, 'cost_efficiency': 0.10, 'bioavailability': 0.05},
+                'post_treatment_care': {'efficacy': 0.15, 'safety': 0.45, 'stability': 0.25, 'cost_efficiency': 0.10, 'bioavailability': 0.05},
+                'long_term_management': {'efficacy': 0.25, 'safety': 0.35, 'stability': 0.25, 'cost_efficiency': 0.10, 'bioavailability': 0.05}
+            }
+        }
+    
+    def generate_comprehensive_formulation_matrix(self, max_combinations: int = 1000) -> Dict[str, Any]:
+        """Generate optimal formulations for all possible condition and treatment combinations"""
+        print("🧬 Starting Meta-Optimization Strategy")
+        print("=" * 50)
+        
+        formulation_matrix = {}
+        combinations_processed = 0
+        total_combinations = min(max_combinations, len(self.skin_conditions) * len(self.skin_types) * len(self.severity_levels))
+        
+        print(f"Processing up to {total_combinations} condition/treatment combinations...")
+        
+        for condition in self.skin_conditions:
+            if combinations_processed >= max_combinations:
+                break
+                
+            for skin_type in self.skin_types:
+                if combinations_processed >= max_combinations:
+                    break
+                    
+                for severity in self.severity_levels:
+                    if combinations_processed >= max_combinations:
+                        break
+                    
+                    for treatment_goal in self.treatment_goals:
+                        if combinations_processed >= max_combinations:
+                            break
+                        
+                        # Create unique combination key
+                        combo_key = f"{condition}_{skin_type}_{severity}_{treatment_goal}"
+                        
+                        # Skip if already processed
+                        if combo_key in self.optimization_cache:
+                            continue
+                        
+                        # Generate optimal formulation for this combination
+                        optimal_formulation = self._optimize_for_combination(
+                            condition, skin_type, severity, treatment_goal
+                        )
+                        
+                        if optimal_formulation:
+                            formulation_matrix[combo_key] = {
+                                'condition': condition,
+                                'skin_type': skin_type,
+                                'severity': severity,
+                                'treatment_goal': treatment_goal,
+                                'formulation': optimal_formulation,
+                                'optimization_score': self._calculate_combination_score(optimal_formulation, condition, skin_type, severity, treatment_goal),
+                                'meta_insights': self._generate_meta_insights(optimal_formulation, condition, skin_type, severity, treatment_goal)
+                            }
+                            
+                            # Cache for future use
+                            self.optimization_cache[combo_key] = formulation_matrix[combo_key]
+                            
+                            combinations_processed += 1
+                            
+                            if combinations_processed % 50 == 0:
+                                print(f"  Processed {combinations_processed}/{total_combinations} combinations...")
+        
+        print(f"✓ Generated {combinations_processed} optimal formulations")
+        
+        # Generate comprehensive analysis
+        analysis = self._analyze_formulation_matrix(formulation_matrix)
+        
+        return {
+            'formulation_matrix': formulation_matrix,
+            'meta_analysis': analysis,
+            'optimization_statistics': {
+                'total_combinations_processed': combinations_processed,
+                'cache_size': len(self.optimization_cache),
+                'performance_matrix_size': len(self.performance_matrix)
+            }
+        }
+    
+    def _optimize_for_combination(self, condition: str, skin_type: str, severity: str, treatment_goal: str) -> Optional[FormulationResult]:
+        """Optimize formulation for specific condition/treatment combination"""
+        try:
+            # Create dynamic formulation request
+            request = self._create_dynamic_request(condition, skin_type, severity, treatment_goal)
+            
+            # Get adaptive weights for this combination
+            objective_weights = self._get_adaptive_weights(skin_type, severity, treatment_goal)
+            
+            # Store original weights and temporarily modify optimizer
+            original_weights = None
+            if hasattr(self.optimizer, '_get_objective_weights'):
+                original_weights = self.optimizer._get_objective_weights()
+            
+            # Temporarily modify the optimizer to use adaptive weights
+            self.optimizer._adaptive_weights = objective_weights
+            
+            # Generate formulation
+            result = self.optimizer.optimize_formulation(request)
+            
+            # Restore original weights
+            if original_weights and hasattr(self.optimizer, '_set_objective_weights'):
+                self.optimizer._set_objective_weights(original_weights)
+            
+            return result
+            
+        except Exception as e:
+            print(f"  Warning: Failed to optimize for {condition}_{skin_type}_{severity}_{treatment_goal}: {e}")
+            return None
+    
+    def _create_dynamic_request(self, condition: str, skin_type: str, severity: str, treatment_goal: str) -> FormulationRequest:
+        """Create dynamic formulation request based on combination parameters"""
+        # Base concerns
+        target_concerns = [condition]
+        secondary_concerns = []
+        
+        # Add related concerns based on condition
+        condition_relationships = {
+            'wrinkles': ['aging', 'firmness'],
+            'aging': ['wrinkles', 'dullness', 'loss_of_elasticity'],
+            'acne': ['oiliness', 'inflammation', 'enlarged_pores'],
+            'hyperpigmentation': ['dullness', 'sun_damage'],
+            'dryness': ['dehydration', 'barrier_damage'],
+            'sensitivity': ['redness', 'inflammation', 'barrier_damage'],
+            'dullness': ['texture', 'dehydration'],
+            'oiliness': ['acne', 'enlarged_pores'],
+            'rosacea': ['sensitivity', 'redness', 'inflammation']
+        }
+        
+        if condition in condition_relationships:
+            secondary_concerns.extend(condition_relationships[condition])
+        
+        # Adjust budget based on severity and treatment goal
+        base_budget = 1000.0
+        severity_multipliers = {'mild': 0.8, 'moderate': 1.0, 'severe': 1.3}
+        goal_multipliers = {
+            'prevention': 0.7, 'maintenance': 0.8, 'treatment': 1.0,
+            'intensive_treatment': 1.5, 'post_treatment_care': 0.9, 'long_term_management': 1.1
+        }
+        
+        budget = base_budget * severity_multipliers.get(severity, 1.0) * goal_multipliers.get(treatment_goal, 1.0)
+        
+        # Set preferences based on skin type and treatment goal
+        preferences = []
+        if skin_type == 'sensitive':
+            preferences.extend(['gentle', 'hypoallergenic'])
+        if treatment_goal in ['prevention', 'maintenance']:
+            preferences.append('gentle')
+        if treatment_goal in ['treatment', 'intensive_treatment']:
+            preferences.append('effective')
+        if severity == 'severe':
+            preferences.append('potent')
+        
+        # Create constraints
+        constraints = FormulationConstraints(
+            max_budget=budget,
+            max_irritation_score=2.0 if skin_type == 'sensitive' else 5.0,
+            required_stability_months=12 if treatment_goal == 'intensive_treatment' else 24
+        )
+        
+        return FormulationRequest(
+            target_concerns=target_concerns,
+            secondary_concerns=secondary_concerns[:3],  # Limit to avoid over-complexity
+            skin_type=skin_type,
+            budget=budget,
+            preferences=preferences,
+            constraints=constraints
+        )
+    
+    def _get_adaptive_weights(self, skin_type: str, severity: str, treatment_goal: str) -> Dict[str, float]:
+        """Get adaptive objective weights based on combination parameters"""
+        # Start with base weights
+        weights = {'efficacy': 0.35, 'safety': 0.25, 'stability': 0.20, 'cost_efficiency': 0.15, 'bioavailability': 0.05}
+        
+        # Apply skin type adjustments
+        if skin_type in self.adaptive_weights['skin_type']:
+            skin_weights = self.adaptive_weights['skin_type'][skin_type]
+            for key in weights.keys():
+                weights[key] = (weights[key] + skin_weights.get(key, weights[key])) / 2
+        
+        # Apply severity adjustments
+        if severity in self.adaptive_weights['severity']:
+            severity_weights = self.adaptive_weights['severity'][severity]
+            for key in weights.keys():
+                weights[key] = (weights[key] + severity_weights.get(key, weights[key])) / 2
+        
+        # Apply treatment goal adjustments
+        if treatment_goal in self.adaptive_weights['treatment_goal']:
+            goal_weights = self.adaptive_weights['treatment_goal'][treatment_goal]
+            for key in weights.keys():
+                weights[key] = (weights[key] + goal_weights.get(key, weights[key])) / 2
+        
+        # Normalize to ensure sum = 1.0
+        total = sum(weights.values())
+        return {k: v/total for k, v in weights.items()}
+    
+    def _calculate_combination_score(self, formulation: FormulationResult, condition: str, skin_type: str, severity: str, treatment_goal: str) -> float:
+        """Calculate optimization score for this specific combination"""
+        base_score = (formulation.predicted_efficacy * 0.4 + 
+                     (formulation.safety_score / 10.0) * 0.3 + 
+                     formulation.synergy_score * 0.2 + 
+                     (1.0 / (formulation.total_cost / 1000.0)) * 0.1)
+        
+        # Apply combination-specific bonuses
+        bonus = 0.0
+        
+        # Severity bonus for appropriate efficacy
+        if severity == 'severe' and formulation.predicted_efficacy > 0.7:
+            bonus += 0.1
+        elif severity == 'mild' and formulation.safety_score > 9.0:
+            bonus += 0.1
+        
+        # Skin type bonus
+        if skin_type == 'sensitive' and formulation.safety_score > 8.5:
+            bonus += 0.1
+        elif skin_type == 'oily' and formulation.predicted_efficacy > 0.6:
+            bonus += 0.05
+        
+        return min(base_score + bonus, 1.0)
+    
+    def _generate_meta_insights(self, formulation: FormulationResult, condition: str, skin_type: str, severity: str, treatment_goal: str) -> Dict[str, Any]:
+        """Generate meta-optimization insights for this combination"""
+        insights = {
+            'optimization_rationale': f"Optimized for {condition} in {skin_type} skin with {severity} severity for {treatment_goal}",
+            'key_trade_offs': [],
+            'alternative_approaches': [],
+            'contraindications': [],
+            'synergy_highlights': []
+        }
+        
+        # Analyze trade-offs
+        if formulation.predicted_efficacy > 0.8 and formulation.safety_score < 8.0:
+            insights['key_trade_offs'].append("High efficacy prioritized over maximum safety")
+        elif formulation.safety_score > 9.0 and formulation.predicted_efficacy < 0.5:
+            insights['key_trade_offs'].append("Maximum safety prioritized over peak efficacy")
+        
+        # Alternative approaches
+        if severity == 'severe' and formulation.total_cost < 800:
+            insights['alternative_approaches'].append("Consider higher-potency actives for severe cases")
+        elif skin_type == 'sensitive' and len(formulation.selected_hypergredients) > 4:
+            insights['alternative_approaches'].append("Simplified formula may be better for sensitive skin")
+        
+        # Contraindications based on combination
+        if condition == 'acne' and 'H.HY' in formulation.selected_hypergredients:
+            insights['contraindications'].append("Monitor for potential pore-clogging with heavy hydrators")
+        elif skin_type == 'sensitive' and formulation.predicted_efficacy > 0.7:
+            insights['contraindications'].append("High efficacy may cause irritation in sensitive skin")
+        
+        # Synergy highlights
+        if formulation.synergy_score > 0.6:
+            insights['synergy_highlights'].append(f"Excellent ingredient synergy (score: {formulation.synergy_score:.2f})")
+        
+        return insights
+    
+    def _analyze_formulation_matrix(self, matrix: Dict[str, Any]) -> Dict[str, Any]:
+        """Analyze the complete formulation matrix for patterns and insights"""
+        analysis = {
+            'pattern_analysis': {},
+            'ingredient_usage_patterns': {},
+            'efficacy_patterns': {},
+            'cost_patterns': {},
+            'optimization_recommendations': []
+        }
+        
+        if not matrix:
+            return analysis
+        
+        # Analyze patterns by condition
+        condition_stats = defaultdict(list)
+        skin_type_stats = defaultdict(list)
+        severity_stats = defaultdict(list)
+        
+        for combo_key, data in matrix.items():
+            condition = data['condition']
+            skin_type = data['skin_type']
+            severity = data['severity']
+            formulation = data['formulation']
+            
+            condition_stats[condition].append(formulation.predicted_efficacy)
+            skin_type_stats[skin_type].append(formulation.safety_score)
+            severity_stats[severity].append(formulation.total_cost)
+        
+        # Calculate average efficacy by condition
+        analysis['efficacy_patterns'] = {
+            condition: {
+                'avg_efficacy': sum(efficacies) / len(efficacies),
+                'count': len(efficacies)
+            }
+            for condition, efficacies in condition_stats.items()
+        }
+        
+        # Calculate average safety by skin type
+        analysis['pattern_analysis']['safety_by_skin_type'] = {
+            skin_type: sum(scores) / len(scores)
+            for skin_type, scores in skin_type_stats.items()
+        }
+        
+        # Calculate average cost by severity
+        analysis['cost_patterns'] = {
+            severity: sum(costs) / len(costs)
+            for severity, costs in severity_stats.items()
+        }
+        
+        # Generate optimization recommendations
+        if analysis['efficacy_patterns']:
+            best_condition = max(analysis['efficacy_patterns'].items(), key=lambda x: x[1]['avg_efficacy'])
+            analysis['optimization_recommendations'].append(
+                f"Best efficacy achieved for {best_condition[0]} (avg: {best_condition[1]['avg_efficacy']:.2%})"
+            )
+        
+        return analysis
+    
+    def get_optimal_formulation_for_profile(self, condition: str, skin_type: str, severity: str = 'moderate', treatment_goal: str = 'treatment') -> Optional[Dict[str, Any]]:
+        """Get optimal formulation for specific user profile"""
+        combo_key = f"{condition}_{skin_type}_{severity}_{treatment_goal}"
+        
+        if combo_key in self.optimization_cache:
+            return self.optimization_cache[combo_key]
+        
+        # Generate if not in cache
+        formulation = self._optimize_for_combination(condition, skin_type, severity, treatment_goal)
+        if formulation:
+            result = {
+                'condition': condition,
+                'skin_type': skin_type,
+                'severity': severity,
+                'treatment_goal': treatment_goal,
+                'formulation': formulation,
+                'optimization_score': self._calculate_combination_score(formulation, condition, skin_type, severity, treatment_goal),
+                'meta_insights': self._generate_meta_insights(formulation, condition, skin_type, severity, treatment_goal)
+            }
+            self.optimization_cache[combo_key] = result
+            return result
+        
+        return None
+    
+    def generate_meta_optimization_report(self) -> str:
+        """Generate comprehensive meta-optimization report"""
+        report = []
+        report.append("🧬 Meta-Optimization Strategy Report")
+        report.append("=" * 50)
+        report.append("")
+        
+        report.append(f"Total Cached Formulations: {len(self.optimization_cache)}")
+        report.append(f"Conditions Covered: {len(self.skin_conditions)}")
+        report.append(f"Skin Types Covered: {len(self.skin_types)}")
+        report.append(f"Severity Levels: {len(self.severity_levels)}")
+        report.append(f"Treatment Goals: {len(self.treatment_goals)}")
+        report.append("")
+        
+        if self.optimization_cache:
+            # Analyze cached formulations
+            total_formulations = len(self.optimization_cache)
+            avg_efficacy = sum(data['formulation'].predicted_efficacy for data in self.optimization_cache.values()) / total_formulations
+            avg_safety = sum(data['formulation'].safety_score for data in self.optimization_cache.values()) / total_formulations
+            avg_cost = sum(data['formulation'].total_cost for data in self.optimization_cache.values()) / total_formulations
+            
+            report.append("Performance Averages:")
+            report.append(f"  Average Efficacy: {avg_efficacy:.2%}")
+            report.append(f"  Average Safety: {avg_safety:.1f}/10")
+            report.append(f"  Average Cost: R{avg_cost:.2f}")
+            report.append("")
+            
+            # Find best formulations
+            best_efficacy = max(self.optimization_cache.values(), key=lambda x: x['formulation'].predicted_efficacy)
+            best_safety = max(self.optimization_cache.values(), key=lambda x: x['formulation'].safety_score)
+            
+            report.append("Top Performers:")
+            report.append(f"  Best Efficacy: {best_efficacy['condition']} for {best_efficacy['skin_type']} skin ({best_efficacy['formulation'].predicted_efficacy:.2%})")
+            report.append(f"  Best Safety: {best_safety['condition']} for {best_safety['skin_type']} skin ({best_safety['formulation'].safety_score:.1f}/10)")
+        
+        report.append("")
+        report.append("Meta-optimization capabilities:")
+        report.append("✓ Systematic exploration of all condition/treatment combinations")
+        report.append("✓ Adaptive objective weights based on user profile")
+        report.append("✓ Dynamic formulation request generation")
+        report.append("✓ Comprehensive caching and performance tracking")
+        report.append("✓ Pattern analysis and optimization insights")
+        
+        return "\n".join(report)
+
+
 class HypergredientVisualizer:
     """Visualization Dashboard for Hypergredient Framework"""
     
@@ -1861,6 +2301,68 @@ def main():
     print(f"  Risk level: {visual_report['risk_assessment']['overall_risk_level']}")
     print(f"  Recommendations: {len(visual_report['recommendations'])} actionable items")
     
+    # Demo 7: Meta-Optimization Strategy
+    print("\n7. Meta-Optimization Strategy for All Conditions/Treatments")
+    print("-" * 60)
+    
+    # Initialize meta-optimization system
+    meta_optimizer = MetaOptimizationStrategy(database)
+    
+    # Generate comprehensive formulation matrix (limited for demo)
+    print("Generating optimal formulations for condition/treatment combinations...")
+    matrix_result = meta_optimizer.generate_comprehensive_formulation_matrix(max_combinations=50)
+    
+    print(f"✓ Generated {len(matrix_result['formulation_matrix'])} optimized formulations")
+    print(f"  Cache size: {matrix_result['optimization_statistics']['cache_size']}")
+    
+    # Show some examples
+    print("\nSample Optimized Formulations:")
+    sample_count = 0
+    for combo_key, data in matrix_result['formulation_matrix'].items():
+        if sample_count >= 3:
+            break
+        print(f"  • {data['condition']} for {data['skin_type']} skin ({data['severity']} severity)")
+        print(f"    Goal: {data['treatment_goal']}")
+        print(f"    Efficacy: {data['formulation'].predicted_efficacy:.2%}, Safety: {data['formulation'].safety_score:.1f}/10")
+        print(f"    Cost: R{data['formulation'].total_cost:.2f}")
+        print(f"    Optimization Score: {data['optimization_score']:.3f}")
+        if data['meta_insights']['key_trade_offs']:
+            print(f"    Trade-offs: {', '.join(data['meta_insights']['key_trade_offs'])}")
+        print()
+        sample_count += 1
+    
+    # Test specific profile optimization
+    print("Testing specific profile optimization:")
+    specific_profile = meta_optimizer.get_optimal_formulation_for_profile(
+        condition='acne', 
+        skin_type='oily', 
+        severity='moderate', 
+        treatment_goal='treatment'
+    )
+    
+    if specific_profile:
+        print(f"  Profile: Moderate acne in oily skin for treatment")
+        print(f"  Efficacy: {specific_profile['formulation'].predicted_efficacy:.2%}")
+        print(f"  Safety: {specific_profile['formulation'].safety_score:.1f}/10")
+        print(f"  Cost: R{specific_profile['formulation'].total_cost:.2f}")
+    
+    # Generate and display meta-optimization report
+    meta_report = meta_optimizer.generate_meta_optimization_report()
+    print(f"\n{meta_report}")
+    
+    # Analyze patterns if we have enough data
+    if matrix_result['meta_analysis']['efficacy_patterns']:
+        print("\nPattern Analysis:")
+        best_conditions = sorted(
+            matrix_result['meta_analysis']['efficacy_patterns'].items(), 
+            key=lambda x: x[1]['avg_efficacy'], 
+            reverse=True
+        )[:3]
+        
+        print("  Top performing conditions:")
+        for condition, stats in best_conditions:
+            print(f"    • {condition}: {stats['avg_efficacy']:.2%} avg efficacy ({stats['count']} formulations)")
+    
     # Save demo results
     demo_results = {
         "formulation_result": {
@@ -1890,7 +2392,25 @@ def main():
         "ingredient_profile": profile,
         "ai_predictions": ai_predictions,
         "evolution_report": evolution_report,
-        "visualization_report": visual_report
+        "visualization_report": visual_report,
+        "meta_optimization": {
+            "total_combinations": len(matrix_result['formulation_matrix']),
+            "sample_formulations": {
+                k: {
+                    "condition": v['condition'],
+                    "skin_type": v['skin_type'],
+                    "severity": v['severity'],
+                    "treatment_goal": v['treatment_goal'],
+                    "efficacy": v['formulation'].predicted_efficacy,
+                    "safety": v['formulation'].safety_score,
+                    "cost": v['formulation'].total_cost,
+                    "optimization_score": v['optimization_score']
+                }
+                for k, v in list(matrix_result['formulation_matrix'].items())[:5]
+            },
+            "meta_analysis": matrix_result['meta_analysis'],
+            "optimization_statistics": matrix_result['optimization_statistics']
+        }
     }
     
     with open("hypergredient_demo_results.json", "w") as f:
@@ -1905,6 +2425,7 @@ def main():
     print("• AI-driven ingredient predictions")
     print("• Evolutionary formulation improvement")
     print("• Comprehensive visualization dashboard")
+    print("• Meta-optimization strategy for all condition/treatment combinations")
 
 
 if __name__ == "__main__":
