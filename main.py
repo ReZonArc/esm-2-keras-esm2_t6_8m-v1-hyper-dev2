@@ -1,20 +1,72 @@
 #!/usr/bin/env python3
 """
-Main script to generate the ESM-2 hypergraph mapping
+Main script to generate the ESM-2 and GPT-2 hypergraph mappings
 """
 
 import json
 import os
 from esm2_hypergraph import create_esm2_hypergraph
 from esm2_metagraph import create_esm2_metagraph
+from gpt2_hypergraph import create_gpt2_hypergraph
+from gpt2_metagraph import create_gpt2_metagraph
 from hypergraph_visualizer import create_visualization_report
 
 
-def main():
-    """Main function to create and analyze the ESM-2 hypergraph"""
+def create_gpt2_model():
+    """Create and analyze GPT-2 hypergraph"""
+    print("\n" + "="*60)
+    print("Creating GPT-2 Hypergraph...")
+    print("="*60)
     
-    # Configuration from the problem statement
-    config = {
+    # GPT-2 Small configuration
+    gpt2_config = {
+        "name": "gpt2_small",
+        "trainable": True,
+        "vocabulary_size": 50257,
+        "num_layers": 12,
+        "num_heads": 12, 
+        "hidden_dim": 768,
+        "intermediate_dim": 3072,
+        "dropout": 0.1,
+        "max_wavelength": 10000,
+        "use_bias": True,
+        "activation": "gelu",
+        "layer_norm_eps": 1e-5,
+        "use_pre_layer_norm": True,
+        "position_embedding_type": "learned",
+        "max_sequence_length": 1024,
+        "pad_token_id": 50256
+    }
+    
+    # Create the hypergraph
+    hypergraph = create_gpt2_hypergraph(gpt2_config)
+    
+    # Print summary
+    print(hypergraph.visualize_summary())
+    
+    # Create the enhanced metagraph with tensor shape types
+    print(f"\n" + "="*60)
+    print("Enhanced GPT-2 MetaGraph with Prime Factorization Tensor Types")
+    print("="*60)
+    
+    metagraph = create_gpt2_metagraph(gpt2_config)
+    print(metagraph.visualize_metagraph_summary())
+    
+    # Save outputs
+    hypergraph.save_to_json("gpt2_hypergraph.json")
+    metagraph.save_metagraph_to_json("gpt2_metagraph.json")
+    
+    print("✓ GPT-2 hypergraph saved to gpt2_hypergraph.json")
+    print("✓ GPT-2 metagraph saved to gpt2_metagraph.json")
+    
+    return hypergraph, metagraph
+
+
+def main():
+    """Main function to create and analyze both ESM-2 and GPT-2 hypergraphs"""
+    
+    # ESM-2 Configuration from the problem statement
+    esm2_config = {
         "name": "esm_backbone",
         "trainable": True,
         "vocabulary_size": 33,
@@ -37,7 +89,7 @@ def main():
     print("=" * 50)
     
     # Create the hypergraph
-    hypergraph = create_esm2_hypergraph(config)
+    hypergraph = create_esm2_hypergraph(esm2_config)
     
     # Print summary
     print(hypergraph.visualize_summary())
@@ -47,7 +99,7 @@ def main():
     print("Enhanced MetaGraph with Prime Factorization Tensor Types")
     print("="*60)
     
-    metagraph = create_esm2_metagraph(config)
+    metagraph = create_esm2_metagraph(esm2_config)
     print(metagraph.visualize_metagraph_summary())
     
     # Export metagraph
@@ -84,6 +136,21 @@ def main():
     print(f"  - esm2_hypergraph.json (full hypergraph data)")
     print(f"  - hypergraph_analysis_report.md (analysis report)")
     print(f"  - esm2_hypergraph.dot (graph visualization)")
+    
+    # Create GPT-2 models
+    create_gpt2_model()
+    
+    print(f"\n" + "="*60)
+    print("Both ESM-2 and GPT-2 Analysis Complete!")
+    print("="*60)
+    print("\nTransformer architectures implemented:")
+    print("• ESM-2: Protein language model with bidirectional attention")
+    print("• GPT-2: Causal language model with masked attention")
+    print("\nKey architectural differences:")
+    print("• Attention: ESM-2 (bidirectional) vs GPT-2 (causal/masked)")
+    print("• Position encoding: ESM-2 (rotary) vs GPT-2 (learned)")
+    print("• Layer norm: ESM-2 (post-norm) vs GPT-2 (pre-norm)")
+    print("• Vocabulary: ESM-2 (33 proteins) vs GPT-2 (50257 tokens)")
     
     # Demonstrate new ESM-2 structure prediction capabilities
     print(f"\n" + "="*60)
