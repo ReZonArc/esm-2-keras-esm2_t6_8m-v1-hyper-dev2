@@ -186,7 +186,7 @@ def main():
     parser.add_argument("--query", choices=[
         "stats", "attention", "params", "bottlenecks", "path", "subgraph", "structure", "scaling", "speed",
         "metagraph", "tensor_types", "tensor_bundles", "topos", "prime_analysis",
-        "hypergredient", "compatibility", "ingredient"
+        "hypergredient", "compatibility", "ingredient", "persona", "persona_train"
     ], required=True, help="Query type")
     parser.add_argument("--start", help="Start node for path query")
     parser.add_argument("--end", help="End node for path query")
@@ -486,6 +486,131 @@ def main():
         profile = analyzer.generate_ingredient_profile(ingredient_id)
         
         print(json.dumps(profile, indent=2))
+    
+    elif args.query == "persona":
+        from hypergredient_framework import PersonaTrainingSystem, HypergredientAI, FormulationRequest
+        
+        # Initialize persona system
+        persona_system = PersonaTrainingSystem()
+        ai_system = HypergredientAI(persona_system)
+        
+        # Show available personas
+        persona_summary = persona_system.get_training_summary()
+        
+        persona_report = {
+            "system_info": {
+                "total_personas": persona_summary["total_personas"],
+                "active_persona": persona_summary["active_persona"]
+            },
+            "available_personas": {}
+        }
+        
+        for persona_id, info in persona_summary["personas"].items():
+            persona_report["available_personas"][persona_id] = {
+                "name": info["name"],
+                "description": info["description"],
+                "skin_type": info["skin_type"],
+                "primary_concerns": info["primary_concerns"],
+                "sensitivity_level": info["sensitivity_level"],
+                "training_samples": info["training_samples"]
+            }
+        
+        # Demonstrate persona-aware predictions
+        test_request = FormulationRequest(
+            target_concerns=['wrinkles', 'sensitivity'],
+            skin_type='sensitive',
+            budget=500.0,
+            preferences=['gentle', 'effective']
+        )
+        
+        persona_report["demo_predictions"] = {}
+        
+        for persona_id in ['sensitive_skin', 'anti_aging']:
+            ai_system.persona_system.set_active_persona(persona_id)
+            prediction = ai_system.predict_optimal_combination(test_request)
+            
+            persona_report["demo_predictions"][persona_id] = {
+                "persona_name": persona_system.personas[persona_id].name,
+                "top_recommendations": [
+                    {
+                        "ingredient_class": pred["ingredient_class"],
+                        "confidence": pred["confidence"],
+                        "reasoning": pred["reasoning"]
+                    }
+                    for pred in prediction["predictions"][:3]
+                ],
+                "persona_adjustments": prediction["persona_adjustments"]
+            }
+        
+        print(json.dumps(persona_report, indent=2))
+    
+    elif args.query == "persona_train":
+        from hypergredient_framework import (PersonaTrainingSystem, HypergredientAI, HypergredientDatabase,
+                                            FormulationRequest, FormulationResult)
+        
+        # Initialize systems
+        persona_system = PersonaTrainingSystem()
+        ai_system = HypergredientAI(persona_system)
+        database = HypergredientDatabase()
+        
+        # Simulate training data for sensitive skin persona
+        training_requests = [
+            FormulationRequest(['sensitivity', 'redness'], skin_type='sensitive', budget=400),
+            FormulationRequest(['barrier_repair'], skin_type='sensitive', budget=500),
+            FormulationRequest(['dryness', 'sensitivity'], skin_type='sensitive', budget=600)
+        ]
+        
+        training_results = []
+        training_feedback = []
+        
+        for i, req in enumerate(training_requests):
+            # Simulate formulation result
+            result = FormulationResult(
+                selected_hypergredients={
+                    'H.AI': {
+                        'ingredient': database.hypergredients['niacinamide'],
+                        'percentage': 5.0, 'cost': 25.0,
+                        'reasoning': f'Anti-inflammatory for sensitive skin case {i+1}'
+                    }
+                },
+                total_cost=300.0 + i * 50,
+                predicted_efficacy=0.7 + i * 0.05,
+                safety_score=9.5,
+                stability_months=24,
+                synergy_score=0.8,
+                reasoning={'H.AI': f'Optimized for sensitivity case {i+1}'}
+            )
+            training_results.append(result)
+            training_feedback.append({
+                'efficacy': 8.0 + i * 0.5,
+                'safety': 9.5 + i * 0.1,
+                'user_satisfaction': 8.5 + i * 0.3
+            })
+        
+        # Train the persona
+        ai_system.train_with_persona('sensitive_skin', training_requests, training_results, training_feedback)
+        
+        # Generate training report
+        updated_summary = persona_system.get_training_summary()
+        training_report = {
+            "training_completed": True,
+            "persona_trained": "sensitive_skin",
+            "training_samples_added": len(training_requests),
+            "total_training_samples": updated_summary["personas"]["sensitive_skin"]["training_samples"],
+            "training_iterations": updated_summary["personas"]["sensitive_skin"]["training_iterations"],
+            "persona_characteristics": {
+                "name": updated_summary["personas"]["sensitive_skin"]["name"],
+                "sensitivity_level": updated_summary["personas"]["sensitive_skin"]["sensitivity_level"],
+                "primary_concerns": updated_summary["personas"]["sensitive_skin"]["primary_concerns"]
+            },
+            "feedback_summary": {
+                "avg_efficacy": sum(fb['efficacy'] for fb in training_feedback) / len(training_feedback),
+                "avg_safety": sum(fb['safety'] for fb in training_feedback) / len(training_feedback),
+                "avg_satisfaction": sum(fb['user_satisfaction'] for fb in training_feedback) / len(training_feedback)
+            }
+        }
+        
+        print(json.dumps(training_report, indent=2))
 
 
 if __name__ == "__main__":

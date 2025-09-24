@@ -112,6 +112,219 @@ class FormulationResult:
     reasoning: Dict[str, str]
 
 
+@dataclass
+class PersonaProfile:
+    """User persona profile for personalized training"""
+    persona_id: str
+    name: str
+    description: str
+    skin_type: str
+    primary_concerns: List[str]
+    sensitivity_level: float  # 0.0 = not sensitive, 1.0 = highly sensitive
+    budget_preference: str  # "budget", "mid-range", "premium"
+    ingredient_preferences: List[str] = field(default_factory=list)
+    ingredient_aversions: List[str] = field(default_factory=list)
+    efficacy_tolerance: float = 0.5  # How long they're willing to wait for results
+    safety_priority: float = 0.8  # How much they prioritize safety vs efficacy
+    natural_preference: float = 0.3  # Preference for natural ingredients
+    
+    def get_persona_weights(self) -> Dict[str, float]:
+        """Get ML model weights based on persona characteristics"""
+        weights = {
+            'efficacy': 1.0 - self.safety_priority,
+            'safety': self.safety_priority,
+            'cost_efficiency': 1.0 if self.budget_preference == "budget" else 0.5,
+            'bioavailability': self.efficacy_tolerance,
+            'stability': 0.8  # Generally important
+        }
+        return weights
+
+
+@dataclass 
+class PersonaTrainingData:
+    """Training data for a specific persona"""
+    persona_id: str
+    formulation_requests: List[FormulationRequest] = field(default_factory=list)
+    formulation_results: List[FormulationResult] = field(default_factory=list)
+    feedback_scores: List[Dict[str, float]] = field(default_factory=list)
+    timestamp_created: float = 0.0
+    training_iterations: int = 0
+
+
+class PersonaTrainingSystem:
+    """Persona-based training system for hypergredient models"""
+    
+    def __init__(self):
+        self.personas: Dict[str, PersonaProfile] = {}
+        self.training_data: Dict[str, PersonaTrainingData] = {}
+        self.active_persona: Optional[str] = None
+        self._initialize_default_personas()
+    
+    def _initialize_default_personas(self):
+        """Initialize common skin care personas"""
+        
+        # Sensitive skin persona
+        sensitive_persona = PersonaProfile(
+            persona_id="sensitive_skin",
+            name="Sensitive Skin Specialist",
+            description="Prioritizes gentle, hypoallergenic formulations",
+            skin_type="sensitive",
+            primary_concerns=["sensitivity", "redness", "barrier_repair"],
+            sensitivity_level=0.9,
+            budget_preference="mid-range",
+            ingredient_preferences=["ceramides", "niacinamide", "hyaluronic_acid"],
+            ingredient_aversions=["alcohol", "fragrances", "essential_oils"],
+            efficacy_tolerance=0.8,  # Willing to wait longer for gentler results
+            safety_priority=0.95,    # Safety over efficacy
+            natural_preference=0.6
+        )
+        
+        # Anti-aging persona
+        anti_aging_persona = PersonaProfile(
+            persona_id="anti_aging",
+            name="Anti-Aging Enthusiast", 
+            description="Seeks powerful anti-aging ingredients with proven efficacy",
+            skin_type="normal",
+            primary_concerns=["wrinkles", "firmness", "hyperpigmentation"],
+            sensitivity_level=0.3,
+            budget_preference="premium",
+            ingredient_preferences=["retinoids", "peptides", "vitamin_c"],
+            ingredient_aversions=["parabens"],
+            efficacy_tolerance=0.3,  # Wants fast results
+            safety_priority=0.6,     # Efficacy over safety (within reason)
+            natural_preference=0.2
+        )
+        
+        # Acne-prone persona
+        acne_persona = PersonaProfile(
+            persona_id="acne_prone",
+            name="Acne-Prone Specialist",
+            description="Focuses on oil control and acne treatment",
+            skin_type="oily",
+            primary_concerns=["acne", "oiliness", "pore_size"],
+            sensitivity_level=0.4,
+            budget_preference="budget",
+            ingredient_preferences=["salicylic_acid", "niacinamide", "zinc"],
+            ingredient_aversions=["comedogenic_oils", "heavy_moisturizers"],
+            efficacy_tolerance=0.4,
+            safety_priority=0.7,
+            natural_preference=0.3
+        )
+        
+        # Natural beauty persona
+        natural_persona = PersonaProfile(
+            persona_id="natural_beauty",
+            name="Natural Beauty Advocate",
+            description="Prefers natural and organic ingredients",
+            skin_type="normal",
+            primary_concerns=["dryness", "general_health"],
+            sensitivity_level=0.5,
+            budget_preference="mid-range", 
+            ingredient_preferences=["plant_extracts", "oils", "botanicals"],
+            ingredient_aversions=["sulfates", "parabens", "synthetic_fragrances"],
+            efficacy_tolerance=0.7,
+            safety_priority=0.8,
+            natural_preference=0.9
+        )
+        
+        # Add to system
+        for persona in [sensitive_persona, anti_aging_persona, acne_persona, natural_persona]:
+            self.add_persona(persona)
+    
+    def add_persona(self, persona: PersonaProfile):
+        """Add a new persona to the system"""
+        self.personas[persona.persona_id] = persona
+        self.training_data[persona.persona_id] = PersonaTrainingData(
+            persona_id=persona.persona_id
+        )
+    
+    def set_active_persona(self, persona_id: str):
+        """Set the active persona for predictions"""
+        if persona_id not in self.personas:
+            raise ValueError(f"Persona {persona_id} not found")
+        self.active_persona = persona_id
+    
+    def train_persona(self, persona_id: str, requests: List[FormulationRequest], 
+                     results: List[FormulationResult], feedback: List[Dict[str, float]]):
+        """Train a specific persona with formulation data"""
+        if persona_id not in self.personas:
+            raise ValueError(f"Persona {persona_id} not found")
+        
+        training_data = self.training_data[persona_id]
+        training_data.formulation_requests.extend(requests)
+        training_data.formulation_results.extend(results)
+        training_data.feedback_scores.extend(feedback)
+        training_data.training_iterations += 1
+        
+        print(f"🎭 Trained persona '{persona_id}' with {len(requests)} formulations")
+        print(f"   Total training samples: {len(training_data.formulation_requests)}")
+    
+    def get_persona_adjusted_features(self, requirements: FormulationRequest, 
+                                    base_features: Dict[str, float]) -> Dict[str, float]:
+        """Adjust features based on active persona"""
+        if not self.active_persona:
+            return base_features
+        
+        persona = self.personas[self.active_persona]
+        adjusted_features = base_features.copy()
+        
+        # Adjust based on persona characteristics
+        adjusted_features['persona_sensitivity'] = persona.sensitivity_level
+        adjusted_features['persona_safety_priority'] = persona.safety_priority
+        adjusted_features['persona_natural_preference'] = persona.natural_preference
+        adjusted_features['persona_efficacy_tolerance'] = persona.efficacy_tolerance
+        
+        # Adjust budget normalization based on persona budget preference
+        budget_multipliers = {"budget": 0.5, "mid-range": 1.0, "premium": 1.5}
+        budget_mult = budget_multipliers.get(persona.budget_preference, 1.0)
+        adjusted_features['budget_normalized'] *= budget_mult
+        
+        return adjusted_features
+    
+    def get_persona_ingredient_preferences(self, persona_id: Optional[str] = None) -> Dict[str, float]:
+        """Get ingredient preference scores for a persona"""
+        if persona_id is None:
+            persona_id = self.active_persona
+        
+        if not persona_id or persona_id not in self.personas:
+            return {}
+        
+        persona = self.personas[persona_id]
+        preferences = {}
+        
+        # Positive preferences
+        for ingredient in persona.ingredient_preferences:
+            preferences[ingredient] = 1.5  # Boost preferred ingredients
+        
+        # Negative preferences  
+        for ingredient in persona.ingredient_aversions:
+            preferences[ingredient] = 0.1  # Penalize avoided ingredients
+        
+        return preferences
+    
+    def get_training_summary(self) -> Dict[str, Any]:
+        """Get summary of persona training status"""
+        summary = {
+            "total_personas": len(self.personas),
+            "active_persona": self.active_persona,
+            "personas": {}
+        }
+        
+        for persona_id, persona in self.personas.items():
+            training_data = self.training_data[persona_id]
+            summary["personas"][persona_id] = {
+                "name": persona.name,
+                "description": persona.description,
+                "training_samples": len(training_data.formulation_requests),
+                "training_iterations": training_data.training_iterations,
+                "skin_type": persona.skin_type,
+                "primary_concerns": persona.primary_concerns,
+                "sensitivity_level": persona.sensitivity_level
+            }
+        
+        return summary
+
+
 class HypergredientDatabase:
     """Dynamic Hypergredient Database"""
     
@@ -949,31 +1162,39 @@ class FormulationEvolution:
 
 
 class HypergredientAI:
-    """Machine Learning Integration for Hypergredient Prediction"""
+    """Machine Learning Integration for Hypergredient Prediction with Persona Support"""
     
-    def __init__(self):
+    def __init__(self, persona_system: Optional[PersonaTrainingSystem] = None):
         self.model_version = "v1.0"
         self.confidence_threshold = 0.7
         self.feedback_data = []
+        self.persona_system = persona_system or PersonaTrainingSystem()
     
     def predict_optimal_combination(self, requirements: FormulationRequest) -> Dict[str, Any]:
-        """Predict best hypergredient combinations using simulated ML"""
+        """Predict best hypergredient combinations using simulated ML with persona awareness"""
         
         # Simulate feature extraction
-        features = self._extract_features(requirements)
+        base_features = self._extract_features(requirements)
+        
+        # Apply persona adjustments if active persona exists
+        features = self.persona_system.get_persona_adjusted_features(requirements, base_features)
         
         # Simulate ML predictions (in real implementation, this would use trained models)
-        predictions = self._simulate_ml_predictions(features)
+        predictions = self._simulate_ml_predictions(features, requirements)
         
         # Rank by confidence
         ranked_predictions = sorted(predictions, key=lambda x: x['confidence'], reverse=True)
         
-        return {
+        result = {
             'model_version': self.model_version,
+            'active_persona': self.persona_system.active_persona,
             'predictions': ranked_predictions[:5],  # Top 5 predictions
             'confidence_scores': {pred['ingredient_class']: pred['confidence'] for pred in ranked_predictions[:5]},
-            'feature_importance': self._get_feature_importance(features)
+            'feature_importance': self._get_feature_importance(features),
+            'persona_adjustments': self._get_persona_adjustments() if self.persona_system.active_persona else None
         }
+        
+        return result
     
     def _extract_features(self, requirements: FormulationRequest) -> Dict[str, float]:
         """Extract features from formulation requirements"""
@@ -1003,8 +1224,8 @@ class HypergredientAI:
         
         return features
     
-    def _simulate_ml_predictions(self, features: Dict[str, float]) -> List[Dict[str, Any]]:
-        """Simulate ML model predictions"""
+    def _simulate_ml_predictions(self, features: Dict[str, float], requirements: FormulationRequest) -> List[Dict[str, Any]]:
+        """Simulate ML model predictions with persona awareness"""
         import random
         
         # Simulate predictions for different hypergredient classes
@@ -1028,7 +1249,26 @@ class HypergredientAI:
                 features['preference_gentleness'] * 0.05
             )
             
-            adjusted_confidence = min(pred['base_confidence'] + confidence_adjustment, 1.0)
+            # Add persona-specific adjustments
+            persona_adjustment = 0.0
+            if self.persona_system.active_persona:
+                persona = self.persona_system.personas[self.persona_system.active_persona]
+                
+                # Adjust based on persona safety priority
+                if pred['ingredient_class'] in ['H.CT'] and persona.safety_priority > 0.8:
+                    persona_adjustment -= 0.2  # Reduce confidence in strong actives for safety-conscious personas
+                
+                # Adjust based on persona concerns
+                concern_boosts = {
+                    'H.AI': 0.3 if 'sensitivity' in persona.primary_concerns else 0.0,
+                    'H.BR': 0.3 if 'barrier_repair' in persona.primary_concerns else 0.0,
+                    'H.CT': 0.3 if 'wrinkles' in persona.primary_concerns else 0.0,
+                    'H.HY': 0.3 if 'dryness' in persona.primary_concerns else 0.0
+                }
+                persona_adjustment += concern_boosts.get(pred['ingredient_class'], 0.0)
+            
+            adjusted_confidence = min(pred['base_confidence'] + confidence_adjustment + persona_adjustment, 1.0)
+            adjusted_confidence = max(adjusted_confidence, 0.1)  # Minimum confidence
             
             predictions.append({
                 'ingredient_class': pred['ingredient_class'],
@@ -1076,13 +1316,59 @@ class HypergredientAI:
         }
         return importance
     
-    def update_from_results(self, formulation_id: str, results: Dict[str, Any]):
-        """Update model from real-world results"""
+    def _get_persona_adjustments(self) -> Dict[str, Any]:
+        """Get current persona adjustments information"""
+        if not self.persona_system.active_persona:
+            return None
+        
+        persona = self.persona_system.personas[self.persona_system.active_persona]
+        return {
+            'persona_name': persona.name,
+            'persona_id': persona.persona_id,
+            'sensitivity_level': persona.sensitivity_level,
+            'safety_priority': persona.safety_priority,
+            'primary_concerns': persona.primary_concerns,
+            'ingredient_preferences': persona.ingredient_preferences,
+            'ingredient_aversions': persona.ingredient_aversions
+        }
+    
+    def train_with_persona(self, persona_id: str, training_requests: List[FormulationRequest],
+                          training_results: List[FormulationResult], 
+                          feedback_scores: List[Dict[str, float]]):
+        """Train the model with persona-specific data"""
+        # Set the persona for training
+        original_persona = self.persona_system.active_persona
+        self.persona_system.set_active_persona(persona_id)
+        
+        try:
+            # Train the persona system
+            self.persona_system.train_persona(persona_id, training_requests, training_results, feedback_scores)
+            
+            # Simulate persona-specific model adaptation
+            self._simulate_persona_adaptation(persona_id, len(training_requests))
+            
+        finally:
+            # Restore original persona
+            if original_persona:
+                self.persona_system.set_active_persona(original_persona)
+            else:
+                self.persona_system.active_persona = None
+    
+    def _simulate_persona_adaptation(self, persona_id: str, training_samples: int):
+        """Simulate persona-specific model adaptation"""
+        persona = self.persona_system.personas[persona_id]
+        print(f"🎭 Adapted model for persona '{persona.name}' with {training_samples} samples")
+        print(f"   Persona characteristics: safety_priority={persona.safety_priority:.2f}, "
+              f"sensitivity={persona.sensitivity_level:.2f}")
+    
+    def update_from_results(self, formulation_id: str, results: Dict[str, Any], persona_id: Optional[str] = None):
+        """Update model from real-world results with optional persona context"""
         feedback_entry = {
             'formulation_id': formulation_id,
             'results': results,
             'timestamp': len(self.feedback_data),  # Simplified timestamp
-            'model_version': self.model_version
+            'model_version': self.model_version,
+            'persona_id': persona_id or self.persona_system.active_persona
         }
         
         self.feedback_data.append(feedback_entry)
@@ -1092,10 +1378,22 @@ class HypergredientAI:
             self._simulate_model_retraining()
     
     def _simulate_model_retraining(self):
-        """Simulate model retraining process"""
+        """Simulate model retraining process with persona awareness"""
+        # Count persona-specific feedback
+        persona_feedback = defaultdict(int)
+        for entry in self.feedback_data[-100:]:  # Last 100 entries
+            if entry.get('persona_id'):
+                persona_feedback[entry['persona_id']] += 1
+        
         # In real implementation, this would retrain the ML model
         self.model_version = f"v{float(self.model_version[1:]) + 0.1:.1f}"
         print(f"🤖 Model retrained to version {self.model_version}")
+        
+        if persona_feedback:
+            print(f"   Persona-specific feedback incorporated:")
+            for persona_id, count in persona_feedback.items():
+                persona_name = self.persona_system.personas.get(persona_id, {}).get('name', persona_id)
+                print(f"     - {persona_name}: {count} samples")
 
 
 class HypergredientVisualizer:
@@ -1367,16 +1665,87 @@ def main():
     print("🧬 Hypergredient Framework Architecture Demo")
     print("=" * 50)
     
-    # Initialize system
+    # Initialize system with persona support
+    persona_system = PersonaTrainingSystem()
     database = HypergredientDatabase()
     optimizer = HypergredientOptimizer(database)
     analyzer = HypergredientAnalyzer(database)
     visualizer = HypergredientVisualizer(database)
+    ai_system = HypergredientAI(persona_system)
     
     print(f"\nInitialized database with {len(database.hypergredients)} hypergredients")
     print(f"Hypergredient classes: {[cls.value for cls in HypergredientClass]}")
     
-    # Demo 1: Generate anti-aging formulation
+    # Demo 0: Persona Training System
+    print("\n🎭 Persona-Based Training System Demo")
+    print("-" * 40)
+    
+    # Show available personas
+    persona_summary = persona_system.get_training_summary()
+    print(f"✓ Initialized {persona_summary['total_personas']} persona profiles:")
+    for persona_id, info in persona_summary['personas'].items():
+        print(f"  • {info['name']}: {info['description']}")
+        print(f"    Skin type: {info['skin_type']}, Concerns: {info['primary_concerns']}")
+    
+    # Demonstrate persona-aware predictions
+    print(f"\n📊 Persona-Aware Predictions Demo:")
+    test_request = FormulationRequest(
+        target_concerns=['wrinkles', 'sensitivity'],
+        skin_type='sensitive',
+        budget=600.0,
+        preferences=['gentle']
+    )
+    
+    # Test different personas
+    personas_to_test = ['sensitive_skin', 'anti_aging']
+    results_by_persona = {}
+    
+    for persona_id in personas_to_test:
+        ai_system.persona_system.set_active_persona(persona_id)
+        prediction = ai_system.predict_optimal_combination(test_request)
+        results_by_persona[persona_id] = prediction
+        
+        persona_name = persona_system.personas[persona_id].name
+        print(f"\n  {persona_name} persona recommendations:")
+        top_3 = prediction['predictions'][:3]
+        for i, pred in enumerate(top_3, 1):
+            print(f"    {i}. {pred['ingredient_class']}: {pred['confidence']:.3f} confidence")
+            print(f"       Reasoning: {pred['reasoning']}")
+    
+    # Show persona training simulation
+    print(f"\n🎓 Persona Training Simulation:")
+    training_requests = [
+        FormulationRequest(['sensitivity', 'redness'], skin_type='sensitive', budget=400),
+        FormulationRequest(['barrier_repair'], skin_type='sensitive', budget=500),
+        FormulationRequest(['dryness', 'sensitivity'], skin_type='sensitive', budget=600)
+    ]
+    
+    # Simulate training results
+    training_results = []
+    training_feedback = []
+    for req in training_requests:
+        # Generate a mock result
+        mock_result = FormulationResult(
+            selected_hypergredients={'H.AI': {'ingredient': database.hypergredients['niacinamide'], 'percentage': 5.0, 'cost': 25.0, 'reasoning': 'Anti-inflammatory for sensitive skin'}},
+            total_cost=300.0,
+            predicted_efficacy=0.7,
+            safety_score=9.5,
+            stability_months=24,
+            synergy_score=0.8,
+            reasoning={'H.AI': 'Excellent for sensitive skin'}
+        )
+        training_results.append(mock_result)
+        training_feedback.append({'efficacy': 8.5, 'safety': 9.8, 'user_satisfaction': 9.0})
+    
+    # Train the sensitive skin persona
+    ai_system.train_with_persona('sensitive_skin', training_requests, training_results, training_feedback)
+    
+    # Show updated training summary
+    updated_summary = persona_system.get_training_summary()
+    sensitive_info = updated_summary['personas']['sensitive_skin']
+    print(f"  Sensitive Skin persona now has {sensitive_info['training_samples']} training samples")
+    
+    # Demo 1: Generate anti-aging formulation (with persona awareness)
     print("\n1. Anti-Aging Formulation Optimization")
     print("-" * 40)
     
