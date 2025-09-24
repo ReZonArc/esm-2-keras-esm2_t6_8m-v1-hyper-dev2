@@ -1,0 +1,557 @@
+{
+  "test_suite_summary": {
+    "timestamp": 1758736887.8516817,
+    "total_tasks": 21,
+    "total_inference_runs": 162,
+    "overall_success_rate": 0.6358024691358025,
+    "test_duration_estimate": 16.2
+  },
+  "overall_reliability": {
+    "consistency_score": 0.4005828713214955,
+    "error_rate": 0.36419753086419754,
+    "stability_score": 0.18799962520416713,
+    "memory_efficiency": 0.680573037341781,
+    "throughput": 88.83505735840156,
+    "latency_p95": 26.7187311208003
+  },
+  "task_results": {
+    "esm2_8m_50_1_0": {
+      "task": {
+        "task_id": "esm2_8m_50_1_0",
+        "model_type": "esm2_8m",
+        "sequence_length": 50,
+        "batch_size": 1,
+        "num_repeats": 10,
+        "expected_accuracy_min": 0.3,
+        "timeout_ms": 5000
+      },
+      "reliability": {
+        "consistency_score": 0.9081405898886004,
+        "error_rate": 0.0,
+        "stability_score": 0.9054115943351513,
+        "memory_efficiency": 0.8619272417460235,
+        "throughput": 169.35599813671533,
+        "latency_p95": 6.614089341659355
+      },
+      "num_results": 10,
+      "successful_runs": 10
+    },
+    "esm2_8m_100_1_1": {
+      "task": {
+        "task_id": "esm2_8m_100_1_1",
+        "model_type": "esm2_8m",
+        "sequence_length": 100,
+        "batch_size": 1,
+        "num_repeats": 10,
+        "expected_accuracy_min": 0.35,
+        "timeout_ms": 8000
+      },
+      "reliability": {
+        "consistency_score": 0,
+        "error_rate": 1.0,
+        "stability_score": 0,
+        "memory_efficiency": 0,
+        "throughput": 0,
+        "latency_p95": 0
+      },
+      "num_results": 10,
+      "successful_runs": 0
+    },
+    "esm2_8m_200_1_2": {
+      "task": {
+        "task_id": "esm2_8m_200_1_2",
+        "model_type": "esm2_8m",
+        "sequence_length": 200,
+        "batch_size": 1,
+        "num_repeats": 8,
+        "expected_accuracy_min": 0.4,
+        "timeout_ms": 15000
+      },
+      "reliability": {
+        "consistency_score": 0,
+        "error_rate": 1.0,
+        "stability_score": 0,
+        "memory_efficiency": 0,
+        "throughput": 0,
+        "latency_p95": 0
+      },
+      "num_results": 8,
+      "successful_runs": 0
+    },
+    "esm2_8m_500_1_3": {
+      "task": {
+        "task_id": "esm2_8m_500_1_3",
+        "model_type": "esm2_8m",
+        "sequence_length": 500,
+        "batch_size": 1,
+        "num_repeats": 5,
+        "expected_accuracy_min": 0.45,
+        "timeout_ms": 30000
+      },
+      "reliability": {
+        "consistency_score": 0,
+        "error_rate": 1.0,
+        "stability_score": 0,
+        "memory_efficiency": 0,
+        "throughput": 0,
+        "latency_p95": 0
+      },
+      "num_results": 5,
+      "successful_runs": 0
+    },
+    "esm2_8m_50_4_4": {
+      "task": {
+        "task_id": "esm2_8m_50_4_4",
+        "model_type": "esm2_8m",
+        "sequence_length": 50,
+        "batch_size": 4,
+        "num_repeats": 8,
+        "expected_accuracy_min": 0.3,
+        "timeout_ms": 10000
+      },
+      "reliability": {
+        "consistency_score": 0.9173272985426878,
+        "error_rate": 0.0,
+        "stability_score": 0.9173272985426878,
+        "memory_efficiency": 0.8615023498864757,
+        "throughput": 182.50611129481553,
+        "latency_p95": 6.061590640886408
+      },
+      "num_results": 8,
+      "successful_runs": 8
+    },
+    "esm2_8m_100_4_5": {
+      "task": {
+        "task_id": "esm2_8m_100_4_5",
+        "model_type": "esm2_8m",
+        "sequence_length": 100,
+        "batch_size": 4,
+        "num_repeats": 8,
+        "expected_accuracy_min": 0.35,
+        "timeout_ms": 20000
+      },
+      "reliability": {
+        "consistency_score": 0,
+        "error_rate": 1.0,
+        "stability_score": 0,
+        "memory_efficiency": 0,
+        "throughput": 0,
+        "latency_p95": 0
+      },
+      "num_results": 8,
+      "successful_runs": 0
+    },
+    "esm2_8m_200_2_6": {
+      "task": {
+        "task_id": "esm2_8m_200_2_6",
+        "model_type": "esm2_8m",
+        "sequence_length": 200,
+        "batch_size": 2,
+        "num_repeats": 5,
+        "expected_accuracy_min": 0.4,
+        "timeout_ms": 25000
+      },
+      "reliability": {
+        "consistency_score": 0,
+        "error_rate": 1.0,
+        "stability_score": 0,
+        "memory_efficiency": 0,
+        "throughput": 0,
+        "latency_p95": 0
+      },
+      "num_results": 5,
+      "successful_runs": 0
+    },
+    "esm2_35m_50_1_7": {
+      "task": {
+        "task_id": "esm2_35m_50_1_7",
+        "model_type": "esm2_35m",
+        "sequence_length": 50,
+        "batch_size": 1,
+        "num_repeats": 10,
+        "expected_accuracy_min": 0.3,
+        "timeout_ms": 5000
+      },
+      "reliability": {
+        "consistency_score": 0.902050700977505,
+        "error_rate": 0.0,
+        "stability_score": 0.9175867616172899,
+        "memory_efficiency": 0.7885249217719653,
+        "throughput": 164.56592610280384,
+        "latency_p95": 7.0060287360010385
+      },
+      "num_results": 10,
+      "successful_runs": 10
+    },
+    "esm2_35m_100_1_8": {
+      "task": {
+        "task_id": "esm2_35m_100_1_8",
+        "model_type": "esm2_35m",
+        "sequence_length": 100,
+        "batch_size": 1,
+        "num_repeats": 10,
+        "expected_accuracy_min": 0.35,
+        "timeout_ms": 8000
+      },
+      "reliability": {
+        "consistency_score": 0.8992312299239786,
+        "error_rate": 0.0,
+        "stability_score": 0.8959382475710154,
+        "memory_efficiency": 0.7881693016908502,
+        "throughput": 77.13456783682943,
+        "latency_p95": 15.778056293805166
+      },
+      "num_results": 10,
+      "successful_runs": 10
+    },
+    "esm2_35m_200_1_9": {
+      "task": {
+        "task_id": "esm2_35m_200_1_9",
+        "model_type": "esm2_35m",
+        "sequence_length": 200,
+        "batch_size": 1,
+        "num_repeats": 8,
+        "expected_accuracy_min": 0.4,
+        "timeout_ms": 15000
+      },
+      "reliability": {
+        "consistency_score": 0,
+        "error_rate": 1.0,
+        "stability_score": 0,
+        "memory_efficiency": 0,
+        "throughput": 0,
+        "latency_p95": 0
+      },
+      "num_results": 8,
+      "successful_runs": 0
+    },
+    "esm2_35m_500_1_10": {
+      "task": {
+        "task_id": "esm2_35m_500_1_10",
+        "model_type": "esm2_35m",
+        "sequence_length": 500,
+        "batch_size": 1,
+        "num_repeats": 5,
+        "expected_accuracy_min": 0.45,
+        "timeout_ms": 30000
+      },
+      "reliability": {
+        "consistency_score": 0,
+        "error_rate": 1.0,
+        "stability_score": 0,
+        "memory_efficiency": 0,
+        "throughput": 0,
+        "latency_p95": 0
+      },
+      "num_results": 5,
+      "successful_runs": 0
+    },
+    "esm2_35m_50_4_11": {
+      "task": {
+        "task_id": "esm2_35m_50_4_11",
+        "model_type": "esm2_35m",
+        "sequence_length": 50,
+        "batch_size": 4,
+        "num_repeats": 8,
+        "expected_accuracy_min": 0.3,
+        "timeout_ms": 10000
+      },
+      "reliability": {
+        "consistency_score": 0.9291033631887303,
+        "error_rate": 0.0,
+        "stability_score": 0.9291033631887303,
+        "memory_efficiency": 0.7881693016908502,
+        "throughput": 155.1948679962545,
+        "latency_p95": 6.923205509867861
+      },
+      "num_results": 8,
+      "successful_runs": 8
+    },
+    "esm2_35m_100_4_12": {
+      "task": {
+        "task_id": "esm2_35m_100_4_12",
+        "model_type": "esm2_35m",
+        "sequence_length": 100,
+        "batch_size": 4,
+        "num_repeats": 8,
+        "expected_accuracy_min": 0.35,
+        "timeout_ms": 20000
+      },
+      "reliability": {
+        "consistency_score": 0.8856831554719705,
+        "error_rate": 0.0,
+        "stability_score": 0.8856831554719705,
+        "memory_efficiency": 0.7867500232413948,
+        "throughput": 76.53698684536269,
+        "latency_p95": 15.343554073378867
+      },
+      "num_results": 8,
+      "successful_runs": 8
+    },
+    "esm2_35m_200_2_13": {
+      "task": {
+        "task_id": "esm2_35m_200_2_13",
+        "model_type": "esm2_35m",
+        "sequence_length": 200,
+        "batch_size": 2,
+        "num_repeats": 5,
+        "expected_accuracy_min": 0.4,
+        "timeout_ms": 25000
+      },
+      "reliability": {
+        "consistency_score": 0,
+        "error_rate": 1.0,
+        "stability_score": 0,
+        "memory_efficiency": 0,
+        "throughput": 0,
+        "latency_p95": 0
+      },
+      "num_results": 5,
+      "successful_runs": 0
+    },
+    "esm2_150m_50_1_14": {
+      "task": {
+        "task_id": "esm2_150m_50_1_14",
+        "model_type": "esm2_150m",
+        "sequence_length": 50,
+        "batch_size": 1,
+        "num_repeats": 10,
+        "expected_accuracy_min": 0.3,
+        "timeout_ms": 5000
+      },
+      "reliability": {
+        "consistency_score": 0.8818012983031978,
+        "error_rate": 0.0,
+        "stability_score": 0.9605329386875324,
+        "memory_efficiency": 0.578639834033777,
+        "throughput": 145.26177596682356,
+        "latency_p95": 8.00872818798118
+      },
+      "num_results": 10,
+      "successful_runs": 10
+    },
+    "esm2_150m_100_1_15": {
+      "task": {
+        "task_id": "esm2_150m_100_1_15",
+        "model_type": "esm2_150m",
+        "sequence_length": 100,
+        "batch_size": 1,
+        "num_repeats": 10,
+        "expected_accuracy_min": 0.35,
+        "timeout_ms": 8000
+      },
+      "reliability": {
+        "consistency_score": 0.8680894900397779,
+        "error_rate": 0.0,
+        "stability_score": 0.9474239732415624,
+        "memory_efficiency": 0.5784483095850834,
+        "throughput": 73.80058739830494,
+        "latency_p95": 15.57457984929449
+      },
+      "num_results": 10,
+      "successful_runs": 10
+    },
+    "esm2_150m_200_1_16": {
+      "task": {
+        "task_id": "esm2_150m_200_1_16",
+        "model_type": "esm2_150m",
+        "sequence_length": 200,
+        "batch_size": 1,
+        "num_repeats": 8,
+        "expected_accuracy_min": 0.4,
+        "timeout_ms": 15000
+      },
+      "reliability": {
+        "consistency_score": 0.9264493023844254,
+        "error_rate": 0.0,
+        "stability_score": 0.9264493023844254,
+        "memory_efficiency": 0.577683477970458,
+        "throughput": 37.688257239065,
+        "latency_p95": 30.007362257147946
+      },
+      "num_results": 8,
+      "successful_runs": 8
+    },
+    "esm2_150m_500_1_17": {
+      "task": {
+        "task_id": "esm2_150m_500_1_17",
+        "model_type": "esm2_150m",
+        "sequence_length": 500,
+        "batch_size": 1,
+        "num_repeats": 5,
+        "expected_accuracy_min": 0.45,
+        "timeout_ms": 30000
+      },
+      "reliability": {
+        "consistency_score": 0,
+        "error_rate": 1.0,
+        "stability_score": 0,
+        "memory_efficiency": 0,
+        "throughput": 0,
+        "latency_p95": 0
+      },
+      "num_results": 5,
+      "successful_runs": 0
+    },
+    "esm2_150m_50_4_18": {
+      "task": {
+        "task_id": "esm2_150m_50_4_18",
+        "model_type": "esm2_150m",
+        "sequence_length": 50,
+        "batch_size": 4,
+        "num_repeats": 8,
+        "expected_accuracy_min": 0.3,
+        "timeout_ms": 10000
+      },
+      "reliability": {
+        "consistency_score": 0.9089831134806121,
+        "error_rate": 0.0,
+        "stability_score": 0.9089831134806121,
+        "memory_efficiency": 0.5784483095850834,
+        "throughput": 149.74356925081332,
+        "latency_p95": 7.512631554966196
+      },
+      "num_results": 8,
+      "successful_runs": 8
+    },
+    "esm2_150m_100_4_19": {
+      "task": {
+        "task_id": "esm2_150m_100_4_19",
+        "model_type": "esm2_150m",
+        "sequence_length": 100,
+        "batch_size": 4,
+        "num_repeats": 8,
+        "expected_accuracy_min": 0.35,
+        "timeout_ms": 20000
+      },
+      "reliability": {
+        "consistency_score": 0.8724173615522473,
+        "error_rate": 0.0,
+        "stability_score": 0.8724173615522473,
+        "memory_efficiency": 0.577683477970458,
+        "throughput": 73.54561584790052,
+        "latency_p95": 16.304889105853217
+      },
+      "num_results": 8,
+      "successful_runs": 8
+    },
+    "esm2_150m_200_2_20": {
+      "task": {
+        "task_id": "esm2_150m_200_2_20",
+        "model_type": "esm2_150m",
+        "sequence_length": 200,
+        "batch_size": 2,
+        "num_repeats": 5,
+        "expected_accuracy_min": 0.4,
+        "timeout_ms": 25000
+      },
+      "reliability": {
+        "consistency_score": 0.9411141273681904,
+        "error_rate": 0.0,
+        "stability_score": 0.9411141273681904,
+        "memory_efficiency": 0.5766668431207137,
+        "throughput": 38.08691288343932,
+        "latency_p95": 28.46262156111229
+      },
+      "num_results": 5,
+      "successful_runs": 5
+    }
+  },
+  "performance_analysis": {
+    "sequence_length_impact": {
+      "50": {
+        "avg_inference_time_ms": 6.249282958303541,
+        "avg_memory_mb": 385.77838134765625,
+        "avg_tm_score": 0.3528219419962998,
+        "num_samples": 54
+      },
+      "100": {
+        "avg_inference_time_ms": 13.290124785266483,
+        "avg_memory_mb": 499.7801920572917,
+        "avg_tm_score": 0.380546074500408,
+        "num_samples": 36
+      },
+      "200": {
+        "avg_inference_time_ms": 26.42664597586642,
+        "avg_memory_mb": 732.2255108173077,
+        "avg_tm_score": 0.4046315822891246,
+        "num_samples": 13
+      }
+    },
+    "batch_size_impact": {
+      "1": {
+        "avg_inference_time_ms": 11.483895092257397,
+        "avg_memory_mb": 472.2309465079472,
+        "throughput_seq_per_sec": 87.07846875701729,
+        "num_samples": 58
+      },
+      "4": {
+        "avg_inference_time_ms": 9.052689128184793,
+        "avg_memory_mb": 432.078466796875,
+        "throughput_seq_per_sec": 441.8576561462089,
+        "num_samples": 40
+      },
+      "2": {
+        "avg_inference_time_ms": 26.25573784518548,
+        "avg_memory_mb": 734.103515625,
+        "throughput_seq_per_sec": 76.17382576687864,
+        "num_samples": 5
+      }
+    },
+    "model_size_impact": {
+      "esm2_8m": {
+        "avg_inference_time_ms": 5.71563129923147,
+        "avg_memory_mb": 160.4450480143229,
+        "avg_tm_score": 0.30242222955677256,
+        "num_samples": 18
+      },
+      "esm2_35m": {
+        "avg_inference_time_ms": 9.62450567286754,
+        "avg_memory_mb": 269.1126200358073,
+        "avg_tm_score": 0.3525498724334295,
+        "num_samples": 36
+      },
+      "esm2_150m": {
+        "avg_inference_time_ms": 14.491604124384697,
+        "avg_memory_mb": 729.9384890186543,
+        "avg_tm_score": 0.4056501751009823,
+        "num_samples": 49
+      }
+    },
+    "memory_scaling": {}
+  },
+  "recommendations": {
+    "overall_assessment": {
+      "reliability_grade": "F",
+      "key_strengths": [
+        "Good throughput performance"
+      ],
+      "areas_for_improvement": [
+        "Consistency could be improved",
+        "Error rate is concerning"
+      ]
+    },
+    "best_configurations": {
+      "most_reliable": {
+        "task_id": "esm2_150m_200_2_20",
+        "consistency_score": 0.9411141273681904
+      },
+      "highest_throughput": {
+        "task_id": "esm2_8m_50_4_4",
+        "throughput": 182.50611129481553
+      },
+      "memory_efficient": {
+        "task_id": "esm2_8m_100_1_1",
+        "memory_efficiency": 0
+      }
+    },
+    "optimization_suggestions": [
+      "Investigate sources of inference time variation",
+      "Implement better error handling and recovery"
+    ],
+    "deployment_recommendations": [
+      "Suitable for real-time applications",
+      "Good for batch processing workloads"
+    ]
+  }
+}
