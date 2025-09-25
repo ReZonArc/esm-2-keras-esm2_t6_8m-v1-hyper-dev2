@@ -216,7 +216,7 @@
     "title": "\ud83e\uddec Hypergredient Formulation Analysis Report",
     "timestamp": "Generated with Hypergredient Framework v1.0",
     "formulation_overview": {
-      "formulation_id": "HF-1386",
+      "formulation_id": "HF-6928",
       "target_concerns": [
         "wrinkles",
         "firmness"
@@ -508,5 +508,89 @@
     "recommendations": [
       "\ud83d\udee1\ufe0f Add stabilizing ingredients or improve packaging to extend shelf life"
     ]
+  },
+  "meta_optimization": {
+    "total_combinations": 50,
+    "sample_formulations": {
+      "wrinkles_oily_mild_prevention": {
+        "condition": "wrinkles",
+        "skin_type": "oily",
+        "severity": "mild",
+        "treatment_goal": "prevention",
+        "efficacy": 0.19283333333333336,
+        "safety": 9.0,
+        "cost": 312.5,
+        "optimization_score": 0.7671333333333334
+      },
+      "wrinkles_oily_mild_maintenance": {
+        "condition": "wrinkles",
+        "skin_type": "oily",
+        "severity": "mild",
+        "treatment_goal": "maintenance",
+        "efficacy": 0.19358333333333333,
+        "safety": 9.0,
+        "cost": 390.0,
+        "optimization_score": 0.7038435897435897
+      },
+      "wrinkles_oily_mild_treatment": {
+        "condition": "wrinkles",
+        "skin_type": "oily",
+        "severity": "mild",
+        "treatment_goal": "treatment",
+        "efficacy": 0.19358333333333333,
+        "safety": 9.0,
+        "cost": 390.0,
+        "optimization_score": 0.7038435897435897
+      },
+      "wrinkles_oily_mild_intensive_treatment": {
+        "condition": "wrinkles",
+        "skin_type": "oily",
+        "severity": "mild",
+        "treatment_goal": "intensive_treatment",
+        "efficacy": 0.19358333333333333,
+        "safety": 9.0,
+        "cost": 390.0,
+        "optimization_score": 0.7038435897435897
+      },
+      "wrinkles_oily_mild_post_treatment_care": {
+        "condition": "wrinkles",
+        "skin_type": "oily",
+        "severity": "mild",
+        "treatment_goal": "post_treatment_care",
+        "efficacy": 0.19283333333333336,
+        "safety": 9.0,
+        "cost": 312.5,
+        "optimization_score": 0.7671333333333334
+      }
+    },
+    "meta_analysis": {
+      "pattern_analysis": {
+        "safety_by_skin_type": {
+          "oily": 9.0,
+          "dry": 9.0,
+          "sensitive": 9.0
+        }
+      },
+      "ingredient_usage_patterns": {},
+      "efficacy_patterns": {
+        "wrinkles": {
+          "avg_efficacy": 0.19332833333333332,
+          "count": 50
+        }
+      },
+      "cost_patterns": {
+        "mild": 351.25,
+        "moderate": 364.1666666666667,
+        "severe": 378.92857142857144
+      },
+      "optimization_recommendations": [
+        "Best efficacy achieved for wrinkles (avg: 19.33%)"
+      ]
+    },
+    "optimization_statistics": {
+      "total_combinations_processed": 50,
+      "cache_size": 50,
+      "performance_matrix_size": 0
+    }
   }
 }
